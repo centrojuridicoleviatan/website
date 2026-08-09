@@ -47,6 +47,9 @@ async function resolveRecord(name, type) {
     if (type === "A") records = await dns.resolve4(name, { ttl: true });
     else if (type === "AAAA") records = await dns.resolve6(name, { ttl: true });
     else records = await dns.resolve(name, type);
+    if (Array.isArray(records) && records.length === 0) {
+      return { name, type, status: "no-data", error: "EMPTY_ANSWER" };
+    }
     return { name, type, status: "answer", records: stableRecords(records) };
   } catch (error) {
     const code = error?.code || "UNKNOWN";
@@ -55,36 +58,91 @@ async function resolveRecord(name, type) {
   }
 }
 
-async function certificateTransparencyNames() {
+async function fetchCertificateTransparency(endpoint) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
   try {
-    const response = await fetch(
-      `https://crt.sh/?q=%25.${DOMAIN}&output=json`,
-      {
-        signal: controller.signal,
-        headers: { "user-agent": "centro-juridico-leviatan-dns-inventory/1.0" }
-      }
-    );
+    const response = await fetch(endpoint, {
+      signal: controller.signal,
+      headers: { "user-agent": "centro-juridico-leviatan-dns-inventory/1.1" }
+    });
     if (!response.ok) throw new Error(`HTTP_${response.status}`);
-    const rows = await response.json();
-    const names = new Set();
-    for (const row of rows) {
-      for (const value of String(row.name_value || "").split("\n")) {
-        const name = value.trim().toLowerCase().replace(/^\*\./, "");
-        if (name === DOMAIN || name.endsWith(`.${DOMAIN}`)) names.add(name);
-      }
-    }
-    return { names: [...names].sort(), error: null };
-  } catch (error) {
-    return { names: [], error: error?.name === "AbortError" ? "TIMEOUT" : String(error?.message || error) };
+    return await response.json();
   } finally {
     clearTimeout(timeout);
   }
 }
 
-function renderValue(records) {
-  return JSON.stringify(records)
+async function certificateTransparencyNames() {
+  const endpoints = [
+    `https://crt.sh/?q=${encodeURIComponent(`%.${DOMAIN}`)}&output=json`,
+    `https://crt.sh/?q=${encodeURIComponent(DOMAIN)}&output=json`
+  ];
+  const failures = [];
+  for (const endpoint of endpoints) {
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      try {
+        const rows = await fetchCertificateTransparency(endpoint);
+        const names = new Set();
+        for (const row of rows) {
+          for (const value of String(row.name_value || "").split("\n")) {
+            const name = value.trim().toLowerCase().replace(/^\*\./, "");
+            if (name === DOMAIN || name.endsWith(`.${DOMAIN}`)) names.add(name);
+          }
+        }
+        return { names: [...names].sort(), error: null };
+      } catch (error) {
+        const reason = error?.name === "AbortError" ? "TIMEOUT" : String(error?.message || error);
+        failures.push(`${reason} (attempt ${attempt})`);
+      }
+    }
+  }
+  return { names: [], error: failures.join("; ") };
+}
+
+async function resolveOrdinaryName(name) {
+  if (name === DOMAIN) {
+    return await Promise.all(
+      ["A", "AAAA", "CAA", "MX", "NS", "SOA", "TXT"].map((type) => resolveRecord(name, type))
+    );
+  }
+
+  const cname = await resolveRecord(name, "CNAME");
+  if (cname.status === "answer") {
+    const addresses = await Promise.all(["A", "AAAA"].map((type) => resolveRecord(name, type)));
+    return [
+      cname,
+      ...addresses.map((result) => ({
+        ...result,
+        resolution: "via-cname",
+        cnameTargets: cname.records
+      }))
+    ];
+  }
+
+  const direct = await Promise.all(
+    ["A", "AAAA", "MX", "TXT"].map((type) => resolveRecord(name, type))
+  );
+  return [cname, ...direct];
+}
+
+async function resolveSpecialQuery({ name, types }) {
+  if (types.includes("CNAME")) {
+    const cname = await resolveRecord(name, "CNAME");
+    if (cname.status === "answer") return [cname];
+    const remaining = await Promise.all(
+      types.filter((type) => type !== "CNAME").map((type) => resolveRecord(name, type))
+    );
+    return [cname, ...remaining];
+  }
+  return await Promise.all(types.map((type) => resolveRecord(name, type)));
+}
+
+function renderResult(result) {
+  const value = result.resolution === "via-cname"
+    ? { records: result.records, resolution: result.resolution, cnameTargets: result.cnameTargets }
+    : result.records;
+  return JSON.stringify(value)
     .replaceAll("|", "\\|")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
@@ -92,32 +150,25 @@ function renderValue(records) {
 
 const ct = await certificateTransparencyNames();
 const ordinaryNames = [...new Set([...KNOWN_HOSTS, ...ct.names])].sort();
-const ordinaryQueries = ordinaryNames.flatMap((name) => {
-  const types = name === DOMAIN
-    ? ["A", "AAAA", "CAA", "MX", "NS", "SOA", "TXT"]
-    : ["A", "AAAA", "CNAME", "MX", "TXT"];
-  return types.map((type) => ({ name, type }));
-});
-const specialQueries = SPECIAL_QUERIES.flatMap(({ name, types }) =>
-  types.map((type) => ({ name, type }))
-);
-const queries = [...ordinaryQueries, ...specialQueries];
-const results = await Promise.all(queries.map(({ name, type }) => resolveRecord(name, type)));
+const ordinaryResults = (await Promise.all(ordinaryNames.map(resolveOrdinaryName))).flat();
+const specialResults = (await Promise.all(SPECIAL_QUERIES.map(resolveSpecialQuery))).flat();
+const results = [...ordinaryResults, ...specialResults];
 results.sort((a, b) => a.name.localeCompare(b.name) || a.type.localeCompare(b.type));
 
 const answers = results.filter((result) => result.status === "answer");
 const snapshot = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   capturedAt: CAPTURED_AT,
   domain: DOMAIN,
   scope: "Public DNS and certificate-transparency snapshot; not an authenticated zone export.",
   authoritativeWarning: "Do not change nameservers or production DNS from this snapshot. Compare it with the complete Spaceship API export first.",
+  cnameHandling: "When a CNAME exists, direct MX/TXT lookups are omitted to avoid misreporting records inherited by resolver alias chasing.",
   certificateTransparency: {
     source: "crt.sh",
     discoveredNames: ct.names,
     error: ct.error
   },
-  queriedNames: [...new Set(queries.map(({ name }) => name))].sort(),
+  queriedNames: [...new Set(results.map(({ name }) => name))].sort(),
   results
 };
 
@@ -134,11 +185,11 @@ const markdown = [
   "",
   "| Nombre | Tipo | Valor |",
   "|---|---|---|",
-  ...answers.map(({ name, type, records }) => `| ${name} | ${type} | ${renderValue(records)} |`),
+  ...answers.map((result) => `| ${result.name} | ${result.type} | ${renderResult(result)} |`),
   "",
   "## Cobertura",
   "",
-  `- Consultas realizadas: ${results.length}`,
+  `- Consultas registradas: ${results.length}`,
   `- Respuestas positivas: ${answers.length}`,
   `- Nombres descubiertos por Certificate Transparency: ${ct.names.length}`,
   `- Error de Certificate Transparency: ${ct.error || "ninguno"}`,
