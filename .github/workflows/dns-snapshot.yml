@@ -1,0 +1,33 @@
+name: Public DNS inventory
+
+on:
+  pull_request:
+    paths:
+      - "scripts/dns-snapshot.mjs"
+      - ".github/workflows/dns-snapshot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    name: snapshot
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Capture public DNS
+        run: node scripts/dns-snapshot.mjs
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-dns-snapshot
+          path: |
+            dns-snapshot.json
+            dns-snapshot.md
+          if-no-files-found: error
+          retention-days: 30
