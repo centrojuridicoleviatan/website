@@ -1,0 +1,766 @@
+{
+  "schemaVersion": 2,
+  "capturedAt": "2026-08-09T20:53:59.101Z",
+  "domain": "centrojuridicoleviatan.com",
+  "scope": "Public DNS and certificate-transparency snapshot; not an authenticated zone export.",
+  "authoritativeWarning": "Do not change nameservers or production DNS from this snapshot. Compare it with the complete Spaceship API export first.",
+  "cnameHandling": "When a CNAME exists, direct MX/TXT lookups are omitted to avoid misreporting records inherited by resolver alias chasing.",
+  "certificateTransparency": {
+    "source": "crt.sh",
+    "discoveredNames": [],
+    "error": "HTTP_502 (attempt 1); TIMEOUT (attempt 2); HTTP_404 (attempt 1); HTTP_502 (attempt 2)"
+  },
+  "queriedNames": [
+    "_autodiscover._tcp.centrojuridicoleviatan.com",
+    "_caldavs._tcp.centrojuridicoleviatan.com",
+    "_carddavs._tcp.centrojuridicoleviatan.com",
+    "_dmarc.centrojuridicoleviatan.com",
+    "_domainconnect.centrojuridicoleviatan.com",
+    "_domainkey.centrojuridicoleviatan.com",
+    "_imaps._tcp.centrojuridicoleviatan.com",
+    "_mta-sts.centrojuridicoleviatan.com",
+    "_pop3s._tcp.centrojuridicoleviatan.com",
+    "_smtp._tls.centrojuridicoleviatan.com",
+    "_submission._tcp.centrojuridicoleviatan.com",
+    "api.centrojuridicoleviatan.com",
+    "autoconfig.centrojuridicoleviatan.com",
+    "autodiscover.centrojuridicoleviatan.com",
+    "centrojuridicoleviatan.com",
+    "cpanel.centrojuridicoleviatan.com",
+    "default._domainkey.centrojuridicoleviatan.com",
+    "ftp.centrojuridicoleviatan.com",
+    "google._domainkey.centrojuridicoleviatan.com",
+    "imap.centrojuridicoleviatan.com",
+    "k1._domainkey.centrojuridicoleviatan.com",
+    "mail._domainkey.centrojuridicoleviatan.com",
+    "mail.centrojuridicoleviatan.com",
+    "mx._domainkey.centrojuridicoleviatan.com",
+    "pop.centrojuridicoleviatan.com",
+    "s1._domainkey.centrojuridicoleviatan.com",
+    "s2._domainkey.centrojuridicoleviatan.com",
+    "security.centrojuridicoleviatan.com",
+    "selector1._domainkey.centrojuridicoleviatan.com",
+    "selector2._domainkey.centrojuridicoleviatan.com",
+    "smtp._domainkey.centrojuridicoleviatan.com",
+    "smtp.centrojuridicoleviatan.com",
+    "spacemail._domainkey.centrojuridicoleviatan.com",
+    "staging.centrojuridicoleviatan.com",
+    "webdisk.centrojuridicoleviatan.com",
+    "webmail.centrojuridicoleviatan.com",
+    "www.centrojuridicoleviatan.com"
+  ],
+  "results": [
+    {
+      "name": "_autodiscover._tcp.centrojuridicoleviatan.com",
+      "type": "SRV",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_caldavs._tcp.centrojuridicoleviatan.com",
+      "type": "SRV",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_carddavs._tcp.centrojuridicoleviatan.com",
+      "type": "SRV",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_dmarc.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_domainconnect.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_domainconnect.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "_imaps._tcp.centrojuridicoleviatan.com",
+      "type": "SRV",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_mta-sts.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_pop3s._tcp.centrojuridicoleviatan.com",
+      "type": "SRV",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_smtp._tls.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "_submission._tcp.centrojuridicoleviatan.com",
+      "type": "SRV",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "api.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "api.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "api.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "api.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "api.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autoconfig.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autoconfig.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autoconfig.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autoconfig.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autoconfig.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autodiscover.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autodiscover.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autodiscover.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autodiscover.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "autodiscover.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "answer",
+      "records": [
+        {
+          "address": "66.29.148.111",
+          "ttl": 300
+        }
+      ]
+    },
+    {
+      "name": "centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "centrojuridicoleviatan.com",
+      "type": "CAA",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "answer",
+      "records": [
+        {
+          "exchange": "smtp.google.com",
+          "priority": 1
+        }
+      ]
+    },
+    {
+      "name": "centrojuridicoleviatan.com",
+      "type": "NS",
+      "status": "answer",
+      "records": [
+        "launch1.spaceship.net",
+        "launch2.spaceship.net"
+      ]
+    },
+    {
+      "name": "centrojuridicoleviatan.com",
+      "type": "SOA",
+      "status": "answer",
+      "records": {
+        "nsname": "launch1.spaceship.net",
+        "hostmaster": "support.spaceship.com",
+        "serial": 1785775717,
+        "refresh": 43200,
+        "retry": 3600,
+        "expire": 604800,
+        "minttl": 3600
+      }
+    },
+    {
+      "name": "centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "answer",
+      "records": [
+        [
+          "google-site-verification=49CGNAl4-1N5NJknZNzv1WMZTDgq-1A9jFvXEHzj9hc"
+        ],
+        [
+          "v=spf1 include:spf.shared.spaceship.host include:_spf.google.com ~all"
+        ]
+      ]
+    },
+    {
+      "name": "cpanel.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "cpanel.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "cpanel.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "cpanel.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "cpanel.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "default._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "default._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "ftp.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "answer",
+      "records": [
+        {
+          "address": "66.29.148.111",
+          "ttl": 300
+        }
+      ]
+    },
+    {
+      "name": "ftp.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "ftp.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "ftp.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "ftp.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "google._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "google._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "answer",
+      "records": [
+        [
+          "v=DKIM1;k=rsa;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmcU9vct88pVrIPrJpgvAZT0UKpVbAh8tiHHXE1yxS1S1bWSPzILle/Xju1dkMmgouikLjQOFaXCqO0mPjpLMsWw0hCbYxzuujR6uUUZH4u5FVsfllnNcjijEeZUS9atLUiQwiOQEgKD1rR6EM9XCQ6VANeFaXEBi5iAAHtdMTaJY5DxPQYfkZy58tjfGRFQE6ND",
+          "gRGEBirgsxOoiRLP+LYek3ulTOAibDIQdelENsSAu9yfPRinMyo8F5olwRTBpUi5DeB2Hpjep6iC0ECkgqPZDde/O6qsRqWAIOsj0PeZe0kytebTg8gS4clm1oq3SVz92m4buxoF/1owqw4derwIDAQAB"
+        ]
+      ]
+    },
+    {
+      "name": "imap.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "imap.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "imap.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "imap.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "imap.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "k1._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "k1._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mail._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mail._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mail.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mail.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mail.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mail.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mail.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mx._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "mx._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "pop.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "pop.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "pop.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "pop.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "pop.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "s1._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "s1._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "s2._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "s2._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "security.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "security.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "security.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "security.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "security.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "selector1._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "selector1._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "selector2._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "selector2._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "smtp._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "smtp._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "smtp.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "smtp.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "smtp.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "smtp.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "smtp.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "spacemail._domainkey.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "spacemail._domainkey.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "staging.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "staging.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "staging.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "staging.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "staging.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "webdisk.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "answer",
+      "records": [
+        {
+          "address": "66.29.148.111",
+          "ttl": 300
+        }
+      ]
+    },
+    {
+      "name": "webdisk.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "webdisk.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "webdisk.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "webdisk.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENODATA"
+    },
+    {
+      "name": "webmail.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "webmail.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "webmail.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "webmail.centrojuridicoleviatan.com",
+      "type": "MX",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "webmail.centrojuridicoleviatan.com",
+      "type": "TXT",
+      "status": "no-data",
+      "error": "ENOTFOUND"
+    },
+    {
+      "name": "www.centrojuridicoleviatan.com",
+      "type": "A",
+      "status": "answer",
+      "records": [
+        {
+          "address": "66.29.148.111",
+          "ttl": 299
+        }
+      ],
+      "resolution": "via-cname",
+      "cnameTargets": [
+        "centrojuridicoleviatan.com"
+      ]
+    },
+    {
+      "name": "www.centrojuridicoleviatan.com",
+      "type": "AAAA",
+      "status": "no-data",
+      "error": "EMPTY_ANSWER",
+      "resolution": "via-cname",
+      "cnameTargets": [
+        "centrojuridicoleviatan.com"
+      ]
+    },
+    {
+      "name": "www.centrojuridicoleviatan.com",
+      "type": "CNAME",
+      "status": "answer",
+      "records": [
+        "centrojuridicoleviatan.com"
+      ]
+    }
+  ]
+}
