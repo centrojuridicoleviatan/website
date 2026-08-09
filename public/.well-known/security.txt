@@ -1,0 +1,5 @@
+Contact: mailto:security@centrojuridicoleviatan.com
+Preferred-Languages: es, en
+Canonical: https://centrojuridicoleviatan.com/.well-known/security.txt
+Policy: https://centrojuridicoleviatan.com/responsible-disclosure
+Expires: 2027-08-09T00:00:00.000Z

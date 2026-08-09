@@ -1,0 +1,539 @@
+<!doctype html>
+<!-- LEVIATÁN v10: sin formulario de contacto; ubicaciones mostradas solo por calle -->
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#050505">
+<meta name="description" content="LEVIATÁN · Centro Jurídico de Inteligencia y Protección Digital.">
+<title>LEVIATÁN | Centro Jurídico de Inteligencia y Protección Digital</title>
+<style>
+:root{
+  --black:#050505; --black2:#0b0b0b; --white:#f7f4ee; --soft:#c2bbae;
+  --gold:#d4b06a; --gold2:#ead9ad; --line:rgba(212,176,106,.24); --line2:rgba(255,255,255,.08);
+  --max:1240px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--white);
+  background:
+    radial-gradient(circle at 82% 8%, rgba(212,176,106,.07), transparent 24%),
+    radial-gradient(circle at 14% 16%, rgba(255,255,255,.018), transparent 18%),
+    var(--black);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  line-height:1.55; overflow-x:hidden;
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:-4; pointer-events:none; opacity:.08;
+  background-image:
+    linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.008) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(to bottom,#000 0%,transparent 94%);
+}
+
+/* Animated watermark system */
+.watermark-stage{
+  position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:-3;
+}
+.watermark{
+  position:absolute; opacity:.12; mix-blend-mode:screen; filter:grayscale(1) brightness(.98);
+  background-repeat:no-repeat; background-size:contain; background-position:center center;
+}
+.watermark.one{
+  width:min(64vw,720px); height:min(64vw,720px);
+  left:54%; top:50%; transform:translate(-50%,-50%);
+  background-image:url("assets/watermark_panel.png");
+  animation: driftA 18s ease-in-out infinite alternate;
+}
+.watermark.two{
+  width:min(46vw,500px); height:min(46vw,500px);
+  left:18%; top:22%; transform:translate(-50%,-50%) scaleX(-1);
+  background-image:url("assets/watermark_panel.png");
+  opacity:.08;
+  animation: driftB 22s ease-in-out infinite alternate;
+}
+.watermark.radar-left,
+.watermark.radar-right{
+  width:52vw; height:52vw; max-width:620px; max-height:620px;
+  border-radius:50%;
+  border:1px solid rgba(212,176,106,.15);
+  opacity:.11;
+}
+.watermark.radar-left{
+  left:-8%; top:12%;
+  animation: radarFloatA 20s ease-in-out infinite alternate;
+}
+.watermark.radar-right{
+  right:-12%; bottom:4%;
+  animation: radarFloatB 24s ease-in-out infinite alternate;
+}
+.watermark.radar-left::before,
+.watermark.radar-left::after,
+.watermark.radar-right::before,
+.watermark.radar-right::after{
+  content:""; position:absolute; inset:14%; border:1px solid rgba(212,176,106,.11); border-radius:50%;
+}
+.watermark.radar-left::after,
+.watermark.radar-right::after{ inset:28%; border-color:rgba(212,176,106,.09); }
+.radar-sweep, .radar-sweep-2{
+  position:absolute; inset:-6%; border-radius:50%;
+  background:conic-gradient(from 0deg, rgba(212,176,106,.0) 0deg, rgba(212,176,106,.0) 310deg, rgba(212,176,106,.12) 340deg, rgba(212,176,106,.0) 360deg);
+  animation: spin 12s linear infinite;
+}
+.radar-sweep-2{
+  inset:18%; opacity:.8;
+  animation-duration: 9s;
+  animation-direction: reverse;
+}
+.radar-cross{
+  position:absolute; left:50%; top:50%; width:86%; height:1px; background:rgba(212,176,106,.10); transform:translate(-50%,-50%);
+}
+.radar-cross::after{
+  content:""; position:absolute; left:50%; top:50%; width:1px; height:86%; background:rgba(212,176,106,.10); transform:translate(-50%,-50%);
+}
+@keyframes driftA{
+  0%{transform:translate(-50%,-50%) translateY(-28px) rotate(-3deg)}
+  100%{transform:translate(-50%,-50%) translateY(24px) rotate(3deg)}
+}
+@keyframes driftB{
+  0%{transform:translate(-50%,-50%) scaleX(-1) translateY(22px) rotate(2deg)}
+  100%{transform:translate(-50%,-50%) scaleX(-1) translateY(-22px) rotate(-3deg)}
+}
+@keyframes radarFloatA{
+  0%{transform:translateY(-18px)}
+  100%{transform:translateY(18px)}
+}
+@keyframes radarFloatB{
+  0%{transform:translateY(18px)}
+  100%{transform:translateY(-18px)}
+}
+@keyframes spin{from{transform:rotate(0deg)} to{transform:rotate(360deg)}}
+
+a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
+button,input,textarea{font:inherit}
+.shell{width:min(calc(100% - 42px),var(--max));margin:auto}
+.reveal{opacity:0;transform:translateY(14px);transition:.75s ease}
+.reveal.visible{opacity:1;transform:none}
+
+.topbar{
+  position:sticky; top:0; z-index:100;
+  background:rgba(5,5,5,.88); backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.nav{
+  min-height:84px; display:grid; grid-template-columns:auto 1fr auto;
+  align-items:center; gap:16px;
+}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-copy strong{display:block;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase}
+.brand-copy span{display:block;color:var(--soft);font-size:.64rem;letter-spacing:.11em;text-transform:uppercase;margin-top:2px}
+.logo-radar{width:52px;height:52px;flex:0 0 auto}
+.logo-radar .ring{fill:none;stroke:rgba(212,176,106,.38);stroke-width:1}
+.logo-radar .outer{stroke:var(--gold);stroke-width:1.35}
+.logo-radar .radar-lines{fill:none;stroke:rgba(212,176,106,.44);stroke-width:1}
+.logo-radar .radar-arm{fill:none;stroke:var(--gold);stroke-width:1.5;stroke-linecap:round}
+.logo-radar .radar-dot{fill:var(--gold)}
+.logo-radar .letter-l{fill:none;stroke:var(--white);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.logo-radar .scale{fill:none;stroke:var(--gold2);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+.navlinks{display:flex;justify-content:center;gap:22px;color:#cbc3b8;font-size:.66rem;text-transform:uppercase;letter-spacing:.12em}
+.navlinks a:hover{color:var(--gold2)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.lang{
+  border:1px solid var(--line2); background:#0b0b0b;color:#d8d0c3;
+  padding:9px 10px; font-size:.68rem; letter-spacing:.04em; cursor:pointer;
+}
+.lang.active{border-color:var(--gold);color:var(--gold2)}
+.nav-cta{
+  border:1px solid var(--gold); color:var(--gold2); padding:10px 14px;
+  font-size:.68rem; text-transform:uppercase; letter-spacing:.12em;
+}
+.nav-cta:hover{background:var(--gold);color:#050505}
+
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:400;margin:0}
+
+.hero{min-height:calc(100svh - 84px);display:grid;align-items:center;padding:72px 0}
+.hero-inner{max-width:960px; position:relative; z-index:2}
+.kicker{
+  display:flex;align-items:center;gap:14px;color:var(--gold2);
+  font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:24px;
+}
+.kicker::before{content:"";width:46px;height:1px;background:var(--gold)}
+.hero-title{font-size:clamp(2.7rem,6.2vw,6.1rem);line-height:.9;letter-spacing:-.05em;text-transform:uppercase}
+.hero-title .brand-big{display:block;color:var(--gold);font-size:1.26em;letter-spacing:-.06em;margin-top:10px}
+.hero-punch{margin-top:26px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.45rem,2.4vw,2.35rem);line-height:1.08}
+.hero-punch .gold{color:var(--gold)}
+.hero-position{margin-top:22px;color:var(--gold2);font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.05rem,1.7vw,1.45rem)}
+.hero-note{
+  margin-top:26px; max-width:840px; padding:18px 20px; border-left:2px solid var(--gold);
+  background:linear-gradient(90deg,rgba(212,176,106,.08),transparent);
+}
+.hero-note b{display:block;color:var(--gold2);text-transform:uppercase;font-size:.69rem;letter-spacing:.16em;margin-bottom:6px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{
+  min-height:52px;display:inline-flex;align-items:center;justify-content:center;padding:0 22px;
+  border:1px solid var(--gold);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;transition:.25s;
+}
+.btn-primary{background:var(--gold);color:#050505;font-weight:900}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
+.btn-ghost{color:var(--gold2)}
+.btn-ghost:hover{background:rgba(212,176,106,.08);transform:translateY(-2px)}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;color:#92897d;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em}
+.hero-meta span{padding-right:10px;border-right:1px solid rgba(255,255,255,.1)}
+.hero-meta span:last-child{border-right:0}
+
+.served{margin-top:34px;border-top:1px solid var(--line);padding-top:22px}
+.served .title{color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:.68rem;margin-bottom:14px}
+.audience-line{display:flex;flex-wrap:wrap;gap:9px}
+.audience-line .pill{
+  display:inline-flex;align-items:center;gap:8px;background:#0a0a0a;border:1px solid var(--line2);
+  padding:8px 12px;border-radius:999px;font-size:.68rem;color:#e0d8cc;text-transform:uppercase;letter-spacing:.08em;
+}
+.logo-svg{width:18px;height:18px;display:block}
+.icon-wrap{width:18px;height:18px;display:grid;place-items:center;flex:0 0 auto}
+.icon-letter{
+  width:18px;height:18px;border-radius:999px;display:grid;place-items:center;
+  border:1px solid rgba(212,176,106,.38);background:rgba(212,176,106,.08);color:var(--gold);font-size:.62rem;font-weight:900;
+}
+
+section{padding:96px 0; position:relative; z-index:2}
+.section-head{display:grid;grid-template-columns:.5fr 1.5fr;gap:50px;margin-bottom:46px}
+.section-head .label{color:var(--gold);font-size:.69rem;text-transform:uppercase;letter-spacing:.22em}
+.section-head h2{font-size:clamp(2.35rem,5.2vw,4.8rem);line-height:.95;letter-spacing:-.045em}
+.section-head p{max-width:760px;color:var(--soft);font-size:1rem;margin-top:18px}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{
+  border:1px solid var(--line);background:rgba(10,10,10,.72);padding:24px;min-height:240px;backdrop-filter:blur(2px);
+}
+.card .small{color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:.62rem;margin-bottom:14px}
+.card h3{font-size:1.56rem;line-height:1.05;margin-bottom:14px}
+.card ul{margin:0;padding-left:18px;color:#d3cbbf}
+.card li{margin:0 0 8px 0}
+
+.direct{
+  background:linear-gradient(105deg,rgba(212,176,106,.06),transparent 32%),rgba(8,8,8,.6);
+  border-top:1px solid rgba(212,176,106,.13);border-bottom:1px solid rgba(212,176,106,.13);
+}
+.direct-list{border-top:1px solid var(--line)}
+.direct-item{display:grid;grid-template-columns:64px 1.04fr .96fr;gap:26px;align-items:center;padding:28px 0;border-bottom:1px solid var(--line)}
+.direct-item .num{font-family:Georgia,serif;color:var(--gold)}
+.direct-item h3{font-size:clamp(1.3rem,2.1vw,2rem);line-height:1.06}
+.direct-item p{margin:0;color:#aba396}
+
+.presence{
+  border-top:1px solid rgba(212,176,106,.13);
+  background:linear-gradient(180deg,rgba(212,176,106,.035),transparent 70%);
+}
+.presence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.presence-item{
+  min-height:150px;padding:28px;border:1px solid var(--line);
+  background:rgba(10,10,10,.68);display:flex;flex-direction:column;justify-content:flex-end;
+}
+.presence-city{font-family:Georgia,serif;font-size:1.5rem;color:var(--white);line-height:1.08}
+.presence-street{margin-top:8px;color:var(--gold);font-size:.76rem;text-transform:uppercase;letter-spacing:.16em}
+.presence-action{margin-top:24px}
+
+footer{padding:46px 0;border-top:1px solid rgba(255,255,255,.07);color:#847d72;font-size:.76rem;position:relative;z-index:2}
+.footer-grid{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.footer-brand{font-family:Georgia,serif;color:var(--white);letter-spacing:.17em;font-size:1.02rem}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+
+@media(max-width:1080px){
+  .navlinks{display:none}
+  .cards-grid{grid-template-columns:repeat(2,1fr)}
+  .presence-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .shell{width:min(calc(100% - 24px),var(--max))}
+  .nav{min-height:74px;grid-template-columns:auto 1fr auto;gap:10px}
+  .logo-radar{width:46px;height:46px}
+  .brand-copy strong{font-size:.66rem;letter-spacing:.12em}
+  .brand-copy span{font-size:.54rem;letter-spacing:.08em}
+  .nav-cta{display:none}
+  .lang{padding:7px 8px;font-size:.6rem}
+  .hero{min-height:auto;padding:48px 0 58px}
+  .section-head{grid-template-columns:1fr;gap:16px}
+  .cards-grid{grid-template-columns:1fr}
+  .direct-item{grid-template-columns:42px 1fr}
+  .direct-item p{grid-column:2}
+  .watermark.one{width:90vw;height:90vw;left:52%;top:50%}
+  .watermark.two{width:64vw;height:64vw;left:15%;top:18%}
+  .watermark.radar-left,.watermark.radar-right{width:86vw;height:86vw}
+}
+@media(max-width:430px){
+  .brand-copy strong{font-size:.59rem}
+  .brand-copy span{font-size:.49rem}
+  .hero-title{font-size:clamp(2.45rem,15vw,4.4rem)}
+  .hero-punch{font-size:1.7rem}
+  .audience-line .pill{font-size:.61rem;padding:8px 10px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;transition:none}
+  .watermark, .radar-sweep, .radar-sweep-2{animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="watermark-stage" aria-hidden="true">
+  <div class="watermark one"></div>
+  <div class="watermark two"></div>
+  <div class="watermark radar-left">
+    <div class="radar-sweep"></div>
+    <div class="radar-sweep-2"></div>
+    <div class="radar-cross"></div>
+  </div>
+  <div class="watermark radar-right">
+    <div class="radar-sweep"></div>
+    <div class="radar-sweep-2"></div>
+    <div class="radar-cross"></div>
+  </div>
+</div>
+
+<header class="topbar">
+  <nav class="shell nav">
+    <a class="brand" href="#inicio">
+      <svg class="logo-radar" viewBox="0 0 64 64" role="img" aria-label="Emblema LEVIATÁN">
+        <circle cx="32" cy="32" r="28" class="ring outer"/>
+        <circle cx="32" cy="32" r="20" class="ring"/>
+        <circle cx="32" cy="32" r="11" class="ring"/>
+        <path d="M32 4V11M32 53V60M4 32H11M53 32H60" class="radar-lines"/>
+        <path d="M32 32L48 19" class="radar-arm"/>
+        <circle cx="32" cy="32" r="2.6" class="radar-dot"/>
+        <path d="M19 20V42H30" class="letter-l"/>
+        <path d="M42 22V43M34 43H50M37 24H47M42 24L34 31M42 24L50 31" class="scale"/>
+        <path d="M34 31L30 38H38L34 31ZM50 31L46 38H54L50 31Z" class="scale"/>
+      </svg>
+      <span class="brand-copy">
+        <strong>LEVIATÁN</strong>
+        <span>Centro Jurídico de Inteligencia y Protección Digital</span>
+      </span>
+    </a>
+    <div class="navlinks">
+      <a href="#hacemos">Qué hacemos</a>
+      <a href="#resolvemos">Qué resolvemos</a>
+      <a href="#trabajamos">Cómo trabajamos</a>
+    </div>
+    <div class="nav-right">
+      <button class="lang active" type="button">🇲🇽 Español</button>
+      <button class="lang" type="button">🇺🇸 English</button>
+      <a class="nav-cta" href="mailto:inteligencia@centrojuridicoleviatan.com?subject=Solicitud%20de%20evaluaci%C3%B3n%20privada">Evaluación privada</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="shell">
+    <div class="hero-inner">
+      <div class="kicker reveal">Acceso privado · por recomendación o invitación</div>
+
+      <h1 class="hero-title reveal">
+        <span>Centro jurídico de inteligencia y protección digital</span>
+        <span class="brand-big">LEVIATÁN</span>
+      </h1>
+
+      <div class="hero-punch reveal">
+        Detectamos.<br>
+        Documentamos.<br>
+        <span class="gold">Protegemos.</span>
+      </div>
+
+      <div class="hero-position reveal">La inteligencia técnica detrás de las decisiones jurídicas.</div>
+
+      <div class="hero-note reveal">
+        <b>Atención selectiva</b>
+        <span>Solo atendemos figuras públicas, creadores de contenido, políticos, empresarios, influencers, televisoras, periodistas y organizaciones previamente evaluadas.</span>
+      </div>
+
+      <div class="actions reveal">
+        <a class="btn btn-primary" href="mailto:inteligencia@centrojuridicoleviatan.com?subject=Solicitud%20de%20evaluaci%C3%B3n%20privada">Solicitar evaluación privada</a>
+        <a class="btn btn-ghost" href="#hacemos">Ver capacidades</a>
+      </div>
+
+      <div class="hero-meta reveal">
+        <span>San Pedro Garza García</span>
+        <span>New York</span>
+        <span>Miami</span>
+        <span>Atención mediante cita</span>
+      </div>
+
+      <div class="served reveal">
+        <div class="title">Solo atendemos</div>
+        <div class="audience-line">
+          <span class="pill"><span class="icon-letter">F</span>Figuras públicas</span>
+          <span class="pill"><span class="icon-letter">P</span>Políticos</span>
+          <span class="pill"><span class="icon-letter">E</span>Empresarios</span>
+          <span class="pill"><span class="icon-letter">I</span>Influencers</span>
+          <span class="pill"><span class="icon-letter">TV</span>Televisoras</span>
+          <span class="pill"><span class="icon-letter">N</span>Periodistas</span>
+          <span class="pill"><span class="icon-wrap">
+            <svg class="logo-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#00AEEF" d="M5 7.5c0-1.4 1.1-2.5 2.5-2.5H16c2.2 0 4 1.8 4 4v.2c0 2.1-1.6 3.8-3.7 4L9.4 14c-2.4.3-4.4-1.6-4.4-4V7.5z"/>
+              <path fill="#FFFFFF" d="M7 9.2h5.1c2.2 0 4 1.8 4 4v.2h-2.4v-.1c0-.9-.7-1.6-1.6-1.6H9.7V18H7V9.2z"/>
+            </svg>
+          </span>OnlyFans</span>
+          <span class="pill"><span class="icon-wrap">
+            <svg class="logo-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#25F4EE" d="M14 5.2c.8 1 1.8 1.7 3 2v2.7c-1.3-.1-2.5-.6-3.6-1.4v5.5a5 5 0 1 1-5-5c.3 0 .6 0 .9.1v2.8a2.2 2.2 0 1 0 1.6 2.1V3h3.1z"/>
+              <path fill="#FE2C55" d="M13.4 4.8c.8 1 1.8 1.7 3 2v2c-1.1-.1-2.2-.5-3.2-1.2v5.7a5 5 0 1 1-5-5h.4v2.4a2.3 2.3 0 1 0 1.8 2.2V2.8h3z"/>
+              <path fill="#FFF" d="M13.7 4.2c.8 1 1.8 1.7 3 2V8c-1.1-.1-2.1-.5-3-.9v6a4.4 4.4 0 1 1-4.4-4.4v1.9a2.5 2.5 0 1 0 1.9 2.5V3.2h2.5z"/>
+            </svg>
+          </span>TikTokers</span>
+          <span class="pill"><span class="icon-wrap">
+            <svg class="logo-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="4.1" fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+              <circle cx="17.2" cy="6.8" r="1.2" fill="#FFFFFF"/>
+            </svg>
+          </span>Instagram</span>
+          <span class="pill"><span class="icon-wrap">
+            <svg class="logo-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#1877F2" d="M13.8 8.1h2.2V5.4c-.4 0-.9-.1-1.7-.1-1.6 0-2.7 1-2.7 2.8v1.6H9.4v3.1h2.2V19h3.3v-6.2H17l.3-3.1h-2.3V8.4c0-.9.2-1.3 1.1-1.3z"/>
+            </svg>
+          </span>Facebook</span>
+          <span class="pill"><span class="icon-wrap">
+            <svg class="logo-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="2.5" y="5.4" width="19" height="13.2" rx="3" fill="#FF0000"/>
+              <path fill="#FFF" d="M10 9.2l5.4 2.8L10 14.8V9.2z"/>
+            </svg>
+          </span>YouTubers</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hacemos">
+  <div class="shell">
+    <div class="section-head">
+      <div class="label reveal">Qué hacemos</div>
+      <div>
+        <h2 class="reveal">Detectamos. Documentamos. Protegemos.</h2>
+        <p class="reveal">Unidad técnica especializada que trabaja junto con abogados, managers, representantes y empresas.</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <article class="card reveal">
+        <div class="small">Capacidades</div>
+        <h3>Qué hacemos</h3>
+        <ul>
+          <li>Detectamos información expuesta.</li>
+          <li>Identificamos contenido filtrado.</li>
+          <li>Localizamos cuentas falsas.</li>
+          <li>Documentamos evidencia técnica.</li>
+          <li>Gestionamos solicitudes de retirada y desindexación.</li>
+          <li>Monitoreamos internet 24/7.</li>
+        </ul>
+      </article>
+
+      <article class="card reveal" id="resolvemos">
+        <div class="small">Problemas</div>
+        <h3>Qué resolvemos</h3>
+        <ul>
+          <li>Filtración de datos personales.</li>
+          <li>OnlyFans, Telegram y contenido íntimo.</li>
+          <li>Deepfakes y robo de identidad.</li>
+          <li>Difamación y doxxing.</li>
+          <li>Documentos filtrados y bases expuestas.</li>
+          <li>Uso indebido de imagen.</li>
+        </ul>
+      </article>
+
+      <article class="card reveal" id="trabajamos">
+        <div class="small">Diferenciador</div>
+        <h3>Cómo trabajamos</h3>
+        <ul>
+          <li>No sustituimos a su abogado: entregamos evidencia técnica.</li>
+          <li>No sustituimos a su manager: reducimos la exposición digital.</li>
+          <li>No sustituimos a su equipo TI: nos enfocamos en la exposición pública.</li>
+          <li>Nos integramos a su equipo como unidad técnica especializada.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="direct">
+  <div class="shell">
+    <div class="section-head">
+      <div class="label reveal">Intervención</div>
+      <div>
+        <h2 class="reveal">Respuesta clara para casos de alta sensibilidad.</h2>
+        <p class="reveal">Problema visible. Evidencia verificable. Priorización y plan de acción.</p>
+      </div>
+    </div>
+
+    <div class="direct-list">
+      <article class="direct-item reveal"><div class="num">01</div><h3>Filtraron tus datos privados en internet.</h3><p>Localizamos, documentamos y gestionamos su retiro o desindexación por las vías aplicables.</p></article>
+      <article class="direct-item reveal"><div class="num">02</div><h3>Lo primero que aparece sobre tu nombre son difamaciones.</h3><p>Construimos evidencia, exigimos correcciones y fortalecemos el trabajo jurídico con seguimiento técnico.</p></article>
+      <article class="direct-item reveal"><div class="num">03</div><h3>Crearon videos, anuncios o perfiles con tu rostro mediante IA.</h3><p>Identificamos contenido sintético, campañas, rutas de difusión y explotación no autorizada de la identidad.</p></article>
+      <article class="direct-item reveal"><div class="num">04</div><h3>Filtraron contenido exclusivo o íntimo.</h3><p>Rastreamos copias, preservamos evidencia y coordinamos retiros en plataformas, foros, redes y sitios espejo.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="presence" id="presencia">
+  <div class="shell">
+    <div class="section-head">
+      <div class="label reveal">Presencia</div>
+      <div>
+        <h2 class="reveal">Atención privada y coordinada.</h2>
+        <p class="reveal">Intervención técnica y jurídica mediante evaluación previa, cita o referencia.</p>
+      </div>
+    </div>
+
+    <div class="presence-grid">
+      <article class="presence-item reveal">
+        <div class="presence-city">San Pedro Garza García</div>
+        <div class="presence-street">Calzada del Valle</div>
+      </article>
+      <article class="presence-item reveal">
+        <div class="presence-city">New York</div>
+        <div class="presence-street">Madison Avenue</div>
+      </article>
+      <article class="presence-item reveal">
+        <div class="presence-city">Miami</div>
+        <div class="presence-street">Brickell Avenue</div>
+      </article>
+    </div>
+
+    <div class="presence-action reveal">
+      <a class="btn btn-primary" href="mailto:inteligencia@centrojuridicoleviatan.com?subject=Solicitud%20de%20evaluaci%C3%B3n%20privada">Solicitar evaluación privada</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="shell footer-grid">
+    <div>
+      <div class="footer-brand">LEVIATÁN</div>
+      <div>Centro Jurídico de Inteligencia y Protección Digital.</div>
+    </div>
+    <div class="footer-links"><a href="#">Aviso de privacidad</a><a href="#">Términos</a><a href="#">Conflictos de interés</a></div>
+    <div>© <span id="year"></span> LEVIATÁN</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+const observer = new IntersectionObserver((entries)=>{entries.forEach((entry)=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+window.addEventListener('scroll', () => {
+  const y = window.scrollY || 0;
+  const w1 = document.querySelector('.watermark.one');
+  const w2 = document.querySelector('.watermark.two');
+  const rl = document.querySelector('.watermark.radar-left');
+  const rr = document.querySelector('.watermark.radar-right');
+  if(w1) w1.style.transform = `translate(-50%,-50%) translateY(${(y * 0.04)-12}px) rotate(${(y*0.01)%8 - 4}deg)`;
+  if(w2) w2.style.transform = `translate(-50%,-50%) scaleX(-1) translateY(${-(y * 0.035)+8}px) rotate(${-(y*0.008)%8 + 4}deg)`;
+  if(rl) rl.style.transform = `translateY(${(y*0.03)%30 - 15}px)`;
+  if(rr) rr.style.transform = `translateY(${-(y*0.03)%30 + 15}px)`;
+}, {passive:true});
+</script>
+</body>
+</html>
