@@ -2,9 +2,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const privateEmail = 'inteligencia@centrojuridicoleviatan.com';
-const privateEvaluation = `mailto:${privateEmail}?subject=Solicitud%20de%20evaluaci%C3%B3n%20privada`;
-
 const audiences = [
   'Figuras públicas',
   'Creadores de contenido',
@@ -116,7 +113,7 @@ const pages = {
   '/open-source': {
     eyebrow: 'Open Source',
     title: 'Herramientas abiertas con responsabilidad.',
-    lead: 'El software liberado por LEVIATÁN incluirá licencia, documentación, modelo de amenazas, historial de cambios y canal de seguridad.',
+    lead: 'El software liberado por LEVIATÁN incluirá licencia, documentación, modelo de amenazas, historial de cambios y un proceso de seguridad definido.',
     items: [
       ['Herramientas defensivas', 'Software orientado a prevención, evaluación y respuesta autorizada.'],
       ['Conjuntos de pruebas', 'Casos reproducibles que faciliten la validación de controles.'],
@@ -129,7 +126,7 @@ const pages = {
     title: 'Seguridad como proceso verificable.',
     lead: 'La seguridad se gestiona como proceso verificable: identificación, priorización, remediación, comunicación y aprendizaje.',
     items: [
-      ['Política de vulnerabilidades', 'Canales y reglas claras para recibir, evaluar y corregir reportes.'],
+      ['Política de vulnerabilidades', 'Reglas claras para evaluar y corregir hallazgos dentro de activos autorizados.'],
       ['Dependencias y control de cambios', 'Revisión de componentes, automatización y trazabilidad de modificaciones.'],
       ['Respaldo y recuperación', 'Preparación para restaurar operaciones y conservar evidencia relevante.'],
       ['Registro de incidentes', 'Cronología, decisiones, acciones correctivas y aprendizaje institucional.']
@@ -140,7 +137,7 @@ const pages = {
     title: 'Preparación para responder con disciplina.',
     lead: 'LEVIATÁN está desarrollando capacidades de respuesta a incidentes. Esta página no afirma acreditación, membresía ni estatus oficial de CSIRT.',
     items: [
-      ['Preparación', 'Alcance, roles, contactos, criterios de escalamiento y ejercicios.'],
+      ['Preparación', 'Alcance, roles, criterios de escalamiento y ejercicios.'],
       ['Triage y coordinación', 'Clasificación inicial y respuesta proporcional al impacto observado.'],
       ['Preservación de evidencia', 'Integridad, cronología y manejo responsable de información técnica.'],
       ['Lecciones aprendidas', 'Correcciones, responsables y seguimiento después de cada incidente.']
@@ -149,12 +146,12 @@ const pages = {
   '/responsible-disclosure': {
     eyebrow: 'Responsible Disclosure',
     title: 'Reportes de buena fe. Correcciones coordinadas.',
-    lead: 'Recibimos reportes de buena fe sobre activos bajo nuestro control y coordinamos su validación y corrección.',
+    lead: 'Los reportes sobre activos bajo nuestro control se coordinan únicamente mediante canales privados proporcionados de forma expresa; este sitio no publica formularios ni direcciones de recepción.',
     items: [
-      ['Incluye activo, impacto y pasos reproducibles', 'Envía información suficiente para validar el hallazgo sin exponer datos innecesarios.'],
+      ['Incluye activo, impacto y pasos reproducibles', 'Comparte únicamente la información necesaria mediante el canal privado que se te haya proporcionado.'],
       ['No accedas a datos de terceros', 'Detén la prueba si encuentras información ajena o una condición no autorizada.'],
       ['No interrumpas servicios', 'Evita degradación, indisponibilidad, persistencia y técnicas destructivas.'],
-      ['Espera confirmación antes de divulgar', 'Coordinaremos validación, mitigación y comunicación responsable.']
+      ['Espera confirmación antes de divulgar', 'La validación, mitigación y comunicación se coordinan por los canales autorizados.']
     ]
   },
   '/governance': {
@@ -193,12 +190,12 @@ const pages = {
   '/privacy': {
     eyebrow: 'Privacidad',
     title: 'Datos mínimos. Propósito definido.',
-    lead: 'Tratamos únicamente los datos necesarios para responder comunicaciones, prestar servicios autorizados y cumplir obligaciones aplicables.',
+    lead: 'Este sitio es informativo y no dispone de formularios públicos, campos de captura ni direcciones de correo publicadas para recibir solicitudes.',
     items: [
-      ['Finalidad y minimización', 'Solicitamos únicamente información necesaria para evaluar o atender el asunto.'],
-      ['Retención limitada', 'Conservamos datos conforme al propósito, los acuerdos y las obligaciones aplicables.'],
-      ['Seguridad razonable', 'Aplicamos medidas proporcionales a la sensibilidad y al riesgo.'],
-      ['Derechos y contacto', `Las solicitudes relacionadas con privacidad pueden dirigirse a ${privateEmail}.`]
+      ['Sin formularios públicos', 'El sitio no solicita nombres, correos, teléfonos, expedientes ni datos sensibles.'],
+      ['Sin recepción pública por correo', 'Los canales operativos se proporcionan únicamente cuando existe invitación, referencia o relación autorizada.'],
+      ['Minimización', 'Cuando existe una relación autorizada, se limita la información al propósito y alcance necesarios.'],
+      ['Seguridad razonable', 'Aplicamos medidas proporcionales a la sensibilidad y al riesgo de la información tratada.']
     ]
   },
   '/terms': {
@@ -217,7 +214,7 @@ const pages = {
     title: 'Independencia antes de intervenir.',
     lead: 'Antes de aceptar un asunto evaluamos relaciones, intereses y circunstancias que puedan afectar la independencia, la confidencialidad o la calidad del trabajo.',
     items: [
-      ['Identificación temprana', 'Recabamos únicamente la información necesaria para realizar una evaluación inicial.'],
+      ['Identificación temprana', 'Recabamos únicamente la información necesaria para realizar una evaluación inicial por canales previamente autorizados.'],
       ['Tratamiento documentado', 'Las medidas, restricciones o decisiones se dejan asentadas.'],
       ['Confidencialidad', 'La revisión no autoriza compartir información sensible fuera de su propósito.'],
       ['Decisión responsable', 'Cuando el conflicto no puede gestionarse adecuadamente, el asunto no se acepta o se interrumpe.']
@@ -258,7 +255,6 @@ function Header() {
         </nav>
         <div className="nav-actions">
           <span className="language" aria-label="Idiomas Español e English">Español · English</span>
-          <a className="header-cta" href={privateEvaluation}>Evaluación privada</a>
           <details className="mobile-menu">
             <summary aria-label="Abrir menú">Menú</summary>
             <nav aria-label="Navegación móvil">
@@ -268,7 +264,6 @@ function Header() {
               <a href="/research">Research</a>
               <a href="/security">Security</a>
               <a href="/governance">Governance</a>
-              <a href="/contacto">Contacto</a>
             </nav>
           </details>
         </div>
@@ -303,14 +298,12 @@ function Footer() {
           <a href="/transparency">Transparency</a>
           <a href="/collaboration">Institutional Collaboration</a>
           <a href="/responsible-disclosure">Responsible Disclosure</a>
-          <a href="/contacto">Contacto</a>
         </div>
         <div className="footer-column">
           <span>Legal</span>
           <a href="/privacy">Aviso de privacidad</a>
           <a href="/terms">Términos</a>
           <a href="/conflicts-of-interest">Conflictos de interés</a>
-          <a href={privateEvaluation}>Solicitar evaluación privada</a>
         </div>
       </div>
       <div className="footer-bottom">
@@ -350,7 +343,6 @@ function Home() {
               <p className="hero-position">La inteligencia técnica detrás de las decisiones jurídicas.</p>
               <p className="hero-lead">Construimos capacidades verificables en ciberseguridad, protección digital e investigación defensiva de inteligencia artificial.</p>
               <div className="actions">
-                <a className="button button-gold" href={privateEvaluation}>Solicitar evaluación privada</a>
                 <a className="button button-ghost" href="#capacidades">Ver capacidades</a>
               </div>
             </div>
@@ -452,8 +444,7 @@ function Home() {
             {locations.map(([city, street], index) => <article key={city}><span>0{index + 1}</span><h3>{city}</h3><p>{street}</p></article>)}
           </div>
           <div className="presence-cta">
-            <p>Un primer contacto discreto. Sin formularios públicos ni información sensible innecesaria.</p>
-            <a className="button button-gold" href={privateEvaluation}>Solicitar evaluación privada</a>
+            <p>La atención se coordina exclusivamente por invitación o referencia. Este sitio no recibe solicitudes ni datos de contacto.</p>
           </div>
         </section>
       </main>
@@ -469,7 +460,6 @@ function ServicesPage() {
           <p className="eyebrow">Servicios</p>
           <h1>Protección digital con alcance, límites y evidencia.</h1>
           <p className="page-lead">Capacidades defensivas para organizaciones y personas previamente evaluadas que necesitan reducir riesgo digital con alcance, límites y entregables documentados.</p>
-          <a className="button button-gold" href={privateEvaluation}>Solicitar evaluación privada</a>
         </section>
         <section className="page-content">
           <div className="page-feature-grid">
@@ -510,33 +500,7 @@ function StandardPage({ data }) {
             ))}
           </div>
           <aside className="limits-note"><strong>Estado y límites</strong><p>La información de esta página describe capacidades y compromisos de trabajo. No implica certificación, afiliación o respaldo de terceros.</p></aside>
-          <div className="page-next"><p>¿Existe un asunto que requiere evaluación privada?</p><a className="button button-gold" href={privateEvaluation}>Contactar a LEVIATÁN</a></div>
-        </section>
-      </main>
-    </Layout>
-  );
-}
-
-function ContactPage() {
-  return (
-    <Layout>
-      <main id="contenido" className="inner-page">
-        <section className="page-hero contact-hero">
-          <p className="eyebrow">Contacto</p>
-          <h1>Un canal adecuado para cada asunto.</h1>
-          <p className="page-lead">Para consultas institucionales, propuestas de colaboración o asuntos de seguridad, utiliza un canal corporativo y evita enviar secretos en el primer contacto.</p>
-        </section>
-        <section className="page-content">
-          <div className="contact-grid">
-            <a href={`mailto:${privateEmail}`}><span>01 · Evaluación privada</span><strong>{privateEmail}</strong><p>Casos sensibles, protección digital y evaluación previa.</p></a>
-            <a href="mailto:contacto@centrojuridicoleviatan.com"><span>02 · Contacto general</span><strong>contacto@centrojuridicoleviatan.com</strong><p>Consultas institucionales y propuestas de colaboración.</p></a>
-            <a href="mailto:security@centrojuridicoleviatan.com"><span>03 · Seguridad</span><strong>security@centrojuridicoleviatan.com</strong><p>Reportes sobre activos bajo nuestro control. Consulta Responsible Disclosure.</p></a>
-          </div>
-          <div className="contact-presence">
-            <div><p className="eyebrow">Cobertura</p><h2>México · colaboración internacional remota</h2></div>
-            <div>{locations.map(([city, street]) => <p key={city}><strong>{city}</strong><span>{street}</span></p>)}</div>
-          </div>
-          <aside className="limits-note"><strong>Antes de escribir</strong><p>No envíes contraseñas, llaves, expedientes completos ni datos sensibles en el primer mensaje. La recepción de una comunicación no crea por sí misma relación abogado-cliente.</p></aside>
+          <div className="page-next"><p>Acceso y atención únicamente mediante invitación, referencia o relación previamente autorizada.</p></div>
         </section>
       </main>
     </Layout>
@@ -548,13 +512,12 @@ function NotFound() {
 }
 
 const path = window.location.pathname.replace(/\/$/, '') || '/';
-const routeTitle = path === '/' ? 'Centro Jurídico LEVIATÁN' : path === '/servicios' ? 'Servicios' : path === '/contacto' ? 'Contacto' : pages[path]?.eyebrow;
+const routeTitle = path === '/' ? 'Centro Jurídico LEVIATÁN' : path === '/servicios' ? 'Servicios' : pages[path]?.eyebrow;
 document.title = routeTitle ? `${routeTitle} | LEVIATÁN` : 'Página no encontrada | LEVIATÁN';
 
 let screen;
 if (path === '/') screen = <Home />;
 else if (path === '/servicios') screen = <ServicesPage />;
-else if (path === '/contacto') screen = <ContactPage />;
 else if (pages[path]) screen = <StandardPage data={pages[path]} />;
 else screen = <NotFound />;
 
