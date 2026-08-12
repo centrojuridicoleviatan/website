@@ -1,4 +1,4 @@
-Contact: mailto:security@centrojuridicoleviatan.com
+Contact: https://github.com/centrojuridicoleviatan/website/security/advisories/new
 Preferred-Languages: es, en
 Canonical: https://centrojuridicoleviatan.com/.well-known/security.txt
 Policy: https://centrojuridicoleviatan.com/responsible-disclosure
