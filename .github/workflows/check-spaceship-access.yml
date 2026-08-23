@@ -3,22 +3,21 @@ name: Check Spaceship access
 on:
   push:
     branches:
-      - diag/check-spaceship-access-20260823
-  pull_request:
-    branches:
       - main
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Verify secret presence and read-only Spaceship auth
+      - name: Verify existing Spaceship secrets and read-only auth
         env:
           SPACESHIP_API_KEY: ${{ secrets.SPACESHIP_API_KEY }}
           SPACESHIP_API_SECRET: ${{ secrets.SPACESHIP_API_SECRET }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -26,29 +25,35 @@ jobs:
           secret_present=false
           if [ -n "${SPACESHIP_API_KEY:-}" ]; then key_present=true; fi
           if [ -n "${SPACESHIP_API_SECRET:-}" ]; then secret_present=true; fi
-          echo "SPACESHIP_API_KEY_PRESENT=$key_present"
-          echo "SPACESHIP_API_SECRET_PRESENT=$secret_present"
-          {
-            echo "## Spaceship access diagnostic"
-            echo "- API key present: $key_present"
-            echo "- API secret present: $secret_present"
-          } >> "$GITHUB_STEP_SUMMARY"
-          if [ "$key_present" != true ] || [ "$secret_present" != true ]; then
-            echo "- Read-only API test: not attempted (missing secret)" >> "$GITHUB_STEP_SUMMARY"
-            exit 0
+
+          code="NOT_ATTEMPTED"
+          auth_result="missing secret"
+          if [ "$key_present" = true ] && [ "$secret_present" = true ]; then
+            code=$(curl -sS -o /tmp/spaceship-response.json -w "%{http_code}" \
+              -H "X-API-Key: ${SPACESHIP_API_KEY}" \
+              -H "X-API-Secret: ${SPACESHIP_API_SECRET}" \
+              "https://spaceship.dev/api/v1/domains/centrojuridicoleviatan.com")
+            case "$code" in
+              200) auth_result="success" ;;
+              401) auth_result="unauthorized" ;;
+              403) auth_result="authenticated but missing domains:read permission" ;;
+              *) auth_result="unexpected HTTP status" ;;
+            esac
           fi
-          code=$(curl -sS -o /tmp/spaceship-response.json -w "%{http_code}" \
-            -H "X-API-Key: ${SPACESHIP_API_KEY}" \
-            -H "X-API-Secret: ${SPACESHIP_API_SECRET}" \
-            "https://spaceship.dev/api/v1/domains/centrojuridicoleviatan.com")
-          echo "SPACESHIP_READ_HTTP_STATUS=$code"
-          echo "- Read-only API HTTP status: $code" >> "$GITHUB_STEP_SUMMARY"
-          if [ "$code" = "200" ]; then
-            echo "- Authenticated domain read: success" >> "$GITHUB_STEP_SUMMARY"
-          elif [ "$code" = "401" ]; then
-            echo "- Authenticated domain read: unauthorized" >> "$GITHUB_STEP_SUMMARY"
-          elif [ "$code" = "403" ]; then
-            echo "- Authenticated domain read: authenticated but missing domains:read permission" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "- Authenticated domain read: unexpected HTTP status" >> "$GITHUB_STEP_SUMMARY"
-          fi
+
+          body=$(cat <<EOF
+          Spaceship access verification for centrojuridicoleviatan.com
+
+          - SPACESHIP_API_KEY present: $key_present
+          - SPACESHIP_API_SECRET present: $secret_present
+          - Read-only API HTTP status: $code
+          - Authenticated domain read: $auth_result
+
+          No secret values were printed or stored in this issue.
+          EOF
+          )
+
+          gh issue create \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Diagnostic: Spaceship API access" \
+            --body "$body"
