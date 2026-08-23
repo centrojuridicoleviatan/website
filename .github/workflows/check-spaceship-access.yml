@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - diag/check-spaceship-access-20260823
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
