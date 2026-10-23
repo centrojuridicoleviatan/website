@@ -32,7 +32,7 @@
 var $=function(id){return document.getElementById(id)},products=[],activeId=0,images=[],nextId=1;
 function safe(s){return String(s||"etiqueta").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9_-]+/g,"_").slice(0,70)||"etiqueta"}
 function norm(s){return String(s==null?"":s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().trim()}
-function product(o){return {id:nextId++,description:o.description||"",code:o.code||"",qty:o.qty||"1 PZ",location:o.location||"",topLabel:o.topLabel||"SURTIDO",imageId:o.imageId||"",showLocation:o.showLocation!==false}}
+function product(o){return {id:nextId++,description:o.description||"",code:o.code||"",qty:o.qty||"1 PZ",location:o.location||"",topLabel:o.topLabel||"SURTIDO",imageId:o.imageId||"",imageRef:o.imageRef||"",sourceRow:Number.isFinite(o.sourceRow)?o.sourceRow:null,sourceSheet:o.sourceSheet||"",fieldRows:o.fieldRows||{},showLocation:o.showLocation!==false}}
 function active(){return products.find(function(p){return p.id===activeId})||products[0]}
 function photoFor(p){return images.find(function(i){return i.id===p.imageId})}
 function status(s){$("status").textContent=s}
@@ -54,19 +54,92 @@ $("search").oninput=render;$("printBtn").onclick=function(){window.print()};
 $("sampleBtn").onclick=function(){products=[product({description:"AZUCAR MASCABADO PZA453GR",code:"8795",qty:"1 PZ",location:"F381M11"})];activeId=products[0].id;render();status("Ejemplo cargado.")};
 $("addBtn").onclick=function(){var p=product({description:"NUEVO PRODUCTO"});products.push(p);activeId=p.id;render()};
 $("deleteBtn").onclick=function(){if(products.length<2){status("Debe quedar al menos un producto.");return}products=products.filter(function(p){return p.id!==activeId});activeId=products[0].id;render()};
-function key(s){s=norm(s).replace(/:$/,"");if(["DESCRIPCION","PRODUCTO","NOMBRE"].indexOf(s)>=0)return"description";if(s==="CODIGO")return"code";if(["SURTIDO","CANTIDAD"].indexOf(s)>=0)return"qty";if(s==="UBICACION")return"location";return""}
-function isKey(s){return !!key(s)}
-function parseRows(rows){
-var headers=-1,cols={};for(var r=0;r<Math.min(30,rows.length);r++){var local={};(rows[r]||[]).forEach(function(v,c){var k=key(v);if(k)local[k]=c});if(local.description!==undefined&&(local.code!==undefined||local.qty!==undefined||local.location!==undefined)){headers=r;cols=local;break}}
-var out=[];if(headers>=0){for(var y=headers+1;y<rows.length;y++){var row=rows[y]||[],o={};["description","code","qty","location"].forEach(function(k){o[k]=cols[k]===undefined?"":String(row[cols[k]]||"").trim()});if(o.description||o.code||o.location||o.qty)out.push(product(o))}if(out.length)return out}
-var flat=rows.flat().map(function(v){return String(v==null?"":v).trim()}).filter(Boolean),cur=null;
-for(var i=0;i<flat.length;i++){var k=key(flat[i]);if(!k)continue;var val=flat[i+1]||"";if(!val||isKey(val))continue;if(k==="description"&&cur&&(cur.description||cur.code||cur.location)){out.push(product(cur));cur=null}if(!cur)cur={description:"",code:"",qty:"1 PZ",location:""};cur[k]=val;i++}
-if(cur&&(cur.description||cur.code||cur.location))out.push(product(cur));if(out.length)return out;
-return rows.filter(function(row){return row.some(function(v){return String(v||"").trim()})}).map(function(row){return product({description:row[0]||"",code:row[1]||"",qty:row[2]||"1 PZ",location:row[3]||""})}).filter(function(p){return p.description||p.code})
+function key(s){
+s=norm(s).replace(/:$/,"");
+if(["DESCRIPCION","PRODUCTO","NOMBRE"].indexOf(s)>=0)return"description";
+if(s==="CODIGO")return"code";
+if(["SURTIDO","CANTIDAD","CANTIDAD Y UNIDAD","PRESENTACION","PRESENTACIÓN"].indexOf(s)>=0)return"qty";
+if(s==="UBICACION")return"location";
+if(["IMAGEN","FOTO","FOTOGRAFIA","FOTOGRAFÍA","IMAGE","IMAGE URL","ARCHIVO IMAGEN","FOTO PRODUCTO"].indexOf(s)>=0)return"imageRef";
+return"";
 }
-$("excelFile").onchange=async function(e){var f=e.target.files[0];if(!f)return;try{if(!window.XLSX)throw Error("No se cargó la biblioteca de Excel. Revisa tu conexión.");var wb=XLSX.read(await f.arrayBuffer(),{type:"array"}),out=[];for(var n of wb.SheetNames){var rows=XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:"",raw:false});out=parseRows(rows);if(out.length)break}if(!out.length)throw Error("No se detectaron productos. Revisa la hoja.");products=out;activeId=products[0].id;matchImages();render();status("Importados "+products.length+" productos. Revisa los campos detectados.");}catch(err){alert(err.message);status(err.message)}finally{e.target.value=""}};
+function isKey(s){return !!key(s)}
+function parseRows(rows,sheetName){
+var headers=-1,cols={};
+for(var r=0;r<Math.min(60,rows.length);r++){var local={};(rows[r]||[]).forEach(function(v,c){var k=key(v);if(k)local[k]=c});if(local.description!==undefined&&(local.code!==undefined||local.qty!==undefined||local.location!==undefined)){headers=r;cols=local;break}}
+var out=[];
+if(headers>=0){for(var y=headers+1;y<rows.length;y++){var row=rows[y]||[],o={sourceRow:y,sourceSheet:sheetName,fieldRows:{description:y}};["description","code","qty","location","imageRef"].forEach(function(k){o[k]=cols[k]===undefined?"":String(row[cols[k]]==null?"":row[cols[k]]).trim();if(o[k])o.fieldRows[k]=y});if(o.description||o.code||o.location||o.qty)out.push(product(o))}if(out.length)return out}
+var cur=null;
+function pushCur(){if(cur&&(cur.description||cur.code||cur.location)){out.push(product(cur));cur=null}}
+for(var rr=0;rr<rows.length;rr++){var rowv=rows[rr]||[];for(var cc=0;cc<rowv.length;cc++){
+var k=key(rowv[cc]);if(!k)continue;var value="",valueRow=rr,found=false;
+for(var right=cc+1;right<rowv.length;right++){var rv=String(rowv[right]==null?"":rowv[right]).trim();if(!rv)continue;if(isKey(rv))break;value=rv;valueRow=rr;found=true;break}
+if(!found){for(var down=rr+1;down<Math.min(rows.length,rr+12);down++){var nextrow=rows[down]||[],dv=String(nextrow[cc]==null?"":nextrow[cc]).trim();if(!dv)continue;if(isKey(dv))break;value=dv;valueRow=down;found=true;break}}
+if(!found){for(var nr=rr;nr<Math.min(rows.length,rr+3)&&!found;nr++){var nrow=rows[nr]||[];for(var nc=(nr===rr?cc+1:0);nc<nrow.length;nc++){var nv=String(nrow[nc]==null?"":nrow[nc]).trim();if(!nv)continue;if(isKey(nv))break;value=nv;valueRow=nr;found=true;break}}}
+if(!found)continue;if(k==="description"&&cur&&cur.description)pushCur();
+if(!cur)cur={description:"",code:"",qty:"1 PZ",location:"",imageRef:"",sourceRow:null,sourceSheet:sheetName,fieldRows:{}};
+cur[k]=value;cur.fieldRows[k]=valueRow;if(k==="description")cur.sourceRow=valueRow;
+}}
+pushCur();if(out.length)return out;
+return rows.map(function(row,index){row=row||[];var vals=row.map(function(v){return String(v==null?"":v).trim()});return{vals:vals,index:index}}).filter(function(x){return x.vals.some(Boolean)}).map(function(x){return product({description:x.vals[0]||"",code:x.vals[1]||"",qty:x.vals[2]||"1 PZ",location:x.vals[3]||"",imageRef:x.vals[4]||"",sourceRow:x.index,sourceSheet:sheetName,fieldRows:{description:x.index}})}).filter(function(p){return p.description||p.code})
+}
+function xmlDoc(text){return new DOMParser().parseFromString(text,"application/xml")}
+function els(doc,name){return Array.from(doc.getElementsByTagNameNS("*",name))}
+function relMap(doc){var m={};els(doc,"Relationship").forEach(function(r){m[r.getAttribute("Id")]={target:r.getAttribute("Target"),type:r.getAttribute("Type")||""}});return m}
+function zipResolve(sourcePath,target){if(!target)return"";if(target.charAt(0)==="/")return target.replace(/^\/+/,"");var parts=sourcePath.split("/");parts.pop();target.split("/").forEach(function(part){if(!part||part===".")return;if(part==="..")parts.pop();else parts.push(part)});return parts.join("/")}
+function relsPath(path){var p=path.split("/"),base=p.pop();return p.concat(["_rels",base+".rels"]).join("/")}
+async function loadXml(zip,path){var f=zip.file(path);if(!f)return null;return xmlDoc(await f.async("text"))}
+function mimeExt(ext){ext=String(ext||"png").toLowerCase();if(ext==="jpg"||ext==="jpeg")return"image/jpeg";if(ext==="gif")return"image/gif";if(ext==="webp")return"image/webp";if(ext==="svg")return"image/svg+xml";return"image/png"}
+async function xlsxEmbeddedImages(buffer){
+if(!window.JSZip)throw Error("No se cargó la biblioteca ZIP necesaria para leer imágenes incrustadas.");
+var zip=await JSZip.loadAsync(buffer),out=[],sheetPathByName={},wbPath="xl/workbook.xml";
+var wb=await loadXml(zip,wbPath),wbr=await loadXml(zip,"xl/_rels/workbook.xml.rels");if(!wb||!wbr)return out;
+var wr=relMap(wbr);
+els(wb,"sheet").forEach(function(sh){var id=sh.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships","id")||sh.getAttribute("r:id"),rel=wr[id];if(rel)sheetPathByName[sh.getAttribute("name")]=zipResolve(wbPath,rel.target)});
+var mediaCache={};
+async function mediaData(path){if(mediaCache[path])return mediaCache[path];var entry=zip.file(path);if(!entry)return null;var ext=(path.split(".").pop()||"png").toLowerCase();if(!["png","jpg","jpeg","gif","webp","svg"].includes(ext))return null;var b64=await entry.async("base64"),obj={data:"data:"+mimeExt(ext)+";base64,"+b64,filename:path.split("/").pop(),path:path};mediaCache[path]=obj;return obj}
+async function addDrawingPictures(sheetName,sheetPath){
+var srel=await loadXml(zip,relsPath(sheetPath));if(!srel)return;var srels=relMap(srel),drawIds=Object.keys(srels).filter(function(id){return /\/drawing$/.test(srels[id].type)});
+for(var ri=0;ri<drawIds.length;ri++){var drawingPath=zipResolve(sheetPath,srels[drawIds[ri]].target),drawing=await loadXml(zip,drawingPath);if(!drawing)continue;var dd=await loadXml(zip,relsPath(drawingPath)),drs=dd?relMap(dd):{},anchors=els(drawing,"oneCellAnchor").concat(els(drawing,"twoCellAnchor"),els(drawing,"absoluteAnchor"));
+for(var ai=0;ai<anchors.length;ai++){var anchor=anchors[ai],from=els(anchor,"from")[0],fr=from?els(from,"row")[0]:null,fc=from?els(from,"col")[0]:null,row=fr?parseInt(fr.textContent,10):NaN,col=fc?parseInt(fc.textContent,10):NaN,blip=els(anchor,"blip")[0];if(!blip||!Number.isFinite(row))continue;var embed=blip.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships","embed")||blip.getAttribute("r:embed"),target=drs[embed];if(!target)continue;var mp=zipResolve(drawingPath,target.target),md=await mediaData(mp);if(!md)continue;out.push({id:"embedded_"+sheetName+"_"+row+"_"+col+"_"+out.length,name:md.filename,data:md.data,sourceRow:row,sourceSheet:sheetName,sourceCol:col,embedded:true,kind:"floating"})}
+}}
+for(var sheetName of Object.keys(sheetPathByName))await addDrawingPictures(sheetName,sheetPathByName[sheetName]);
+// Extraer imágenes nuevas de Excel "Colocar en celda", que usan DISPIMG y xl/cellimages.xml.
+var ci=await loadXml(zip,"xl/cellimages.xml");
+if(ci){var cir=await loadXml(zip,"xl/_rels/cellimages.xml.rels"),cirels=cir?relMap(cir):{},byName={};
+for(var cimg of els(ci,"cellImage")){var cn=els(cimg,"cNvPr")[0],bl=els(cimg,"blip")[0];if(!cn||!bl)continue;var nm=cn.getAttribute("name")||cn.getAttribute("descr")||"",rid=bl.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships","embed")||bl.getAttribute("r:embed"),rel=cirels[rid];if(!nm||!rel)continue;var path=zipResolve("xl/cellimages.xml",rel.target),md=await mediaData(path);if(md)byName[nm]={data:md.data,name:md.filename}}
+for(var sn of Object.keys(sheetPathByName)){var sp=sheetPathByName[sn],sd=await loadXml(zip,sp);if(!sd)continue;for(var cell of els(sd,"c")){var formula=els(cell,"f")[0];if(!formula)continue;var mt=String(formula.textContent||"").match(/DISPIMG\(\s*["']([^"']+)["']/i);if(!mt||!byName[mt[1]])continue;var addr=cell.getAttribute("r")||"",rn=addr.match(/\d+/),row=rn?parseInt(rn[0],10)-1:NaN;if(!Number.isFinite(row))continue;var im=byName[mt[1]];out.push({id:"incell_"+sn+"_"+row+"_"+out.length,name:im.name,data:im.data,sourceRow:row,sourceSheet:sn,embedded:true,kind:"in-cell"})}}}
+return out
+}
+$("excelFile").onchange=async function(e){
+var f=e.target.files[0];if(!f)return;
+try{
+if(!window.XLSX)throw Error("No se cargó la biblioteca de Excel. Revisa tu conexión.");
+var buffer=await f.arrayBuffer(),wb=XLSX.read(buffer,{type:"array",cellFormula:true}),out=[],chosenSheet="";
+for(var n of wb.SheetNames){var rows=XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:"",raw:false});out=parseRows(rows,n);if(out.length){chosenSheet=n;break}}
+if(!out.length)throw Error("No se detectaron productos. Revisa la hoja.");
+images=images.filter(function(im){return !im.embedded});
+if(/\.(xlsx|xlsm|xltx|xltm)$/i.test(f.name)){try{images=images.concat(await xlsxEmbeddedImages(buffer))}catch(imgErr){console.warn("No fue posible extraer imágenes del Excel:",imgErr)}}
+products=out;
+products.forEach(function(p){if(p.imageRef&&/^data:image\/[^;]+;base64,/i.test(p.imageRef)){var id="data_"+p.id;images.push({id:id,name:"Imagen de "+(p.code||p.description),data:p.imageRef});p.imageId=id}});
+activeId=products[0].id;matchImages();render();
+var found=images.filter(function(im){return im.embedded&&(!im.sourceSheet||im.sourceSheet===chosenSheet)}).length;
+if(/\.(csv|txt)$/i.test(f.name))status("Importados "+products.length+" productos. Un CSV no conserva imágenes incrustadas: usa el Excel .xlsx original o carga las fotos aparte.");
+else if(found)status("Importados "+products.length+" productos; se recuperaron "+found+" imágenes incrustadas. Revisa su asociación.");
+else status("Importados "+products.length+" productos, pero no se detectaron fotos incrustadas. Puede que el archivo use un formato de imagen no compatible.");
+}catch(err){alert(err.message);status(err.message)}finally{e.target.value=""}};
 function fileData(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result)};r.onerror=rej;r.readAsDataURL(f)})}
-function matchImages(){products.forEach(function(p){if(p.imageId)return;var c=norm(p.code),d=norm(p.description).replace(/[^A-Z0-9]/g,"");var im=images.find(function(x){var n=norm(x.name).replace(/[^A-Z0-9]/g,"");return(c&&norm(x.name).indexOf(c)>=0)||(d.length>5&&n.indexOf(d.slice(0,12))>=0)});if(!im&&images.length===1)im=images[0];if(im)p.imageId=im.id})}
+function matchImages(){
+products.forEach(function(p){
+if(p.imageId)return;
+var sourceRow=Number.isFinite(p.sourceRow)?p.sourceRow:(p.fieldRows&&Number.isFinite(p.fieldRows.description)?p.fieldRows.description:null);
+var sameSheet=images.filter(function(im){return im.embedded&&(!p.sourceSheet||!im.sourceSheet||im.sourceSheet===p.sourceSheet)});
+if(sourceRow!==null&&sameSheet.length){var cand=sameSheet.map(function(im){return{image:im,distance:Math.abs(im.sourceRow-sourceRow)}}).filter(function(x){return x.distance<=2}).sort(function(x,y){return x.distance-y.distance});if(cand.length){p.imageId=cand[0].image.id;return}}
+if(p.imageRef){var ref=String(p.imageRef).trim(),base=ref.split(/[\\/]/).pop().toLowerCase(),found=images.find(function(im){return im.name.toLowerCase()===base||im.name.toLowerCase()===ref.toLowerCase()});if(found){p.imageId=found.id;return}}
+var c=norm(p.code),d=norm(p.description).replace(/[^A-Z0-9]/g,""),byName=images.find(function(x){if(x.embedded)return false;var n=norm(x.name).replace(/[^A-Z0-9]/g,"");return(c&&norm(x.name).indexOf(c)>=0)||(d.length>5&&n.indexOf(d.slice(0,12))>=0)});
+if(!byName&&images.filter(function(im){return !im.embedded}).length===1)byName=images.find(function(im){return !im.embedded});if(byName)p.imageId=byName.id
+})
+}
 async function addImages(files){for(var f of files){if(!f.type.startsWith("image/"))continue;images.push({id:"im"+Date.now()+Math.random(),name:f.name,data:await fileData(f)})}matchImages();render();status("Fotografías cargadas; verifica la asignación.")}
 $("imageFiles").onchange=async function(e){await addImages(Array.from(e.target.files));e.target.value=""};
 $("singleImage").onchange=async function(e){if(e.target.files[0]){await addImages([e.target.files[0]]);active().imageId=images[images.length-1].id;render()}e.target.value=""};
