@@ -195,7 +195,8 @@ var supabaseClient=null,cloudUser=null,cloudReady=false,cloudTimer=null,cloudPul
 var CLOUD_BUCKET="label-images",CLOUD_TABLE="label_products",CLOUD_CONFIG_KEY="label_supabase_config_v1";
 function cloudMessage(s){$("cloudMessage").textContent=s}
 function cloudBadge(s,ok){$("cloudBadge").textContent=s;$("cloudBadge").classList.toggle("ok",!!ok)}
-function loadCloudConfig(){try{var c=JSON.parse(localStorage.getItem(CLOUD_CONFIG_KEY)||"{}");$("sbUrl").value=c.url||"";$("sbKey").value=c.key||""}catch(e){}}
+var DEFAULT_SUPABASE_URL="https://pspyndluyyzohmjnbdjy.supabase.co";var DEFAULT_SUPABASE_KEY="sb_publishable_UATq02yaeA7ht_UD5rwfDg_Wk-9YVnJ";
+function loadCloudConfig(){try{var c=JSON.parse(localStorage.getItem(CLOUD_CONFIG_KEY)||"{}");$("sbUrl").value=c.url||DEFAULT_SUPABASE_URL;$("sbKey").value=c.key||DEFAULT_SUPABASE_KEY}catch(e){$("sbUrl").value=DEFAULT_SUPABASE_URL;$("sbKey").value=DEFAULT_SUPABASE_KEY}}
 function validUrl(s){try{var u=new URL(s);return u.protocol==="https:"&&!!u.hostname}catch(e){return false}}
 async function getSupabaseFactory(){if(window.supabaseCreateClient)return window.supabaseCreateClient;var m=await import("https://esm.sh/@supabase/supabase-js@2");window.supabaseCreateClient=m.createClient;return m.createClient}
 function newCloudId(){if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c){var r=Math.random()*16|0;return (c==="x"?r:(r&3|8)).toString(16)})}
