@@ -6,13 +6,24 @@
 <style>
 :root{--navy:#172233;--blue:#9bcdf5;--bg:#f3f5f8;--line:#d9dee7;--ink:#16191f;--muted:#697386}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 Arial,sans-serif}button,input,textarea,select{font:inherit}button,.filebtn{border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px 12px;cursor:pointer;font-weight:600}button.primary{background:var(--navy);color:#fff}.top{background:var(--navy);color:white;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.top h1{font-size:18px;margin:0}.top p{margin:3px 0 0;color:#ccd4df;font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions .filebtn{color:#111}.filebtn input{display:none}.notice{padding:10px 18px;background:#f4faff;border-bottom:1px solid #d8e5ef;font-size:12px}.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:14px;padding:14px;max-width:1700px;margin:auto}.panel{background:white;border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}.head{padding:13px 14px;border-bottom:1px solid var(--line);font-weight:700;display:flex;justify-content:space-between;align-items:center}.lefttools{padding:10px;display:grid;gap:8px;border-bottom:1px solid var(--line)}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:7px;padding:9px;background:#fff}textarea{min-height:55px}.list{padding:7px;max-height:calc(100vh - 270px);overflow:auto}.item{padding:10px;border:1px solid transparent;border-radius:8px;cursor:pointer;margin-bottom:4px}.item:hover{background:#f5f8fb}.item.active{background:#eef6ff;border-color:#b7d8f4}.item strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.muted{font-size:11px;color:var(--muted);margin-top:3px}.main{display:grid;grid-template-columns:minmax(280px,1fr) 300px;gap:14px;align-items:start}.previewbg{background:#e9edf2;padding:12px;overflow:auto}.paper{background:#fff;width:min(100%,580px);aspect-ratio:8.5/11;margin:auto;display:flex;flex-direction:column;padding:1.8%;color:#000;box-shadow:0 4px 18px #0002;overflow:hidden}.bar{height:8.7%;min-height:30px;background:var(--blue);border:1.5px solid #000;display:flex;justify-content:space-between;align-items:center;padding:0 3%;font-size:clamp(18px,2.6vw,35px);font-weight:900}.code{height:5.7%;min-height:23px;border:1.5px solid #000;border-top:0;display:flex;justify-content:space-between;align-items:center;padding:0 4%;font-size:clamp(13px,1.8vw,25px);font-weight:900}.photo{flex:1;min-height:0;min-width:0;display:flex;align-items:stretch;justify-content:stretch;padding:0;overflow:hidden}.photo img{display:block;width:100%;height:100%;min-width:0;min-height:0;object-fit:contain;object-position:center}.placeholder{border:2px dashed #c7ccd3;color:#8993a2;padding:36px;text-align:center}.footer{font-size:clamp(10px,1.25vw,18px);font-weight:900;border:1.5px solid #000}.row{display:grid;grid-template-columns:auto 1fr;border-bottom:1.5px solid #000}.row:last-child{border-bottom:0}.row span{padding:7px;overflow-wrap:anywhere}.editor{padding:12px;display:grid;gap:10px}.field{display:grid;gap:4px}.field label{font-size:11px;font-weight:800;color:#4c586a;text-transform:uppercase}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.exports{display:grid;grid-template-columns:1fr 1fr;gap:7px;border-top:1px solid var(--line);padding-top:10px}.wide{grid-column:1/-1}.status{font-size:11px;color:var(--muted);min-height:16px}.hidden{display:none!important}
+.cloud-panel{margin:14px 14px 0;max-width:1672px}.cloud-body{padding:12px 14px;display:grid;gap:10px}.cloud-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.cloud-actions{display:flex;gap:7px;flex-wrap:wrap}.cloud-actions button{font-size:12px}.cloud-badge{font-size:11px;border-radius:20px;padding:4px 9px;background:#fff3dc;color:#805a14}.cloud-badge.ok{background:#e5f6eb;color:#176a40}.cloud-help{font-size:12px;color:var(--muted);line-height:1.5}.cloud-panel .field label{font-size:11px}
+@media(max-width:680px){.cloud-panel{margin:8px}.cloud-grid{grid-template-columns:1fr}}
 @media(max-width:1000px){.main{grid-template-columns:1fr}.editor{order:2}.previewbg{order:1}.paper{width:min(100%,650px)}}@media(max-width:680px){.layout{grid-template-columns:1fr;padding:8px}.list{max-height:230px}.bar{font-size:clamp(20px,6vw,34px)}.code{font-size:clamp(15px,4vw,24px)}}
 @media print{@page{size:letter portrait;margin:0}body{background:#fff}.top,.notice,.layout>.panel:first-child,.editor,.head.previewhead{display:none!important}.layout{display:block;margin:0;padding:0}.main{display:block}.previewbg{padding:0;background:#fff}.paper{width:8.5in;height:11in;aspect-ratio:auto;box-shadow:none;padding:.16in}.bar,.code,.footer{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
 </style>
 </head>
 <body>
 <header class="top"><div><h1>Machote de etiquetas</h1><p>Editor mecánico · sin IA · sin tokens de IA</p></div><div class="actions"><label class="filebtn"><input id="excelFile" type="file" accept=".xlsx,.xls,.csv">Importar Excel / CSV</label><label class="filebtn"><input id="imageFiles" type="file" accept="image/*" multiple>Importar fotografías</label></div></header>
-<div class="notice">Los productos, cambios y fotografías se guardan automáticamente en la base de datos local de este navegador. No se envían a una IA. Requiere internet para cargar las bibliotecas de Excel y exportación. La base local no se sincroniza entre dispositivos.</div>
+<div class="notice">Los productos y fotografías pueden sincronizarse entre computadoras mediante Supabase. Se procesan sin IA ni tokens. Configura el proyecto y usa una cuenta autorizada para compartir el catálogo.</div>
+<section class="panel cloud-panel" id="cloudPanel">
+<div class="head"><span>Base de datos compartida · Supabase</span><span class="cloud-badge" id="cloudBadge">No conectado</span></div>
+<div class="cloud-body">
+<div class="cloud-grid"><div class="field"><label for="sbUrl">Project URL</label><input id="sbUrl" placeholder="https://tu-proyecto.supabase.co" autocomplete="url"></div><div class="field"><label for="sbKey">Publishable key / anon key</label><input id="sbKey" type="password" placeholder="sb_publishable_… o anon key" autocomplete="off"></div></div>
+<div class="cloud-grid auth-grid"><div class="field"><label for="sbEmail">Correo de la cuenta autorizada</label><input id="sbEmail" type="email" placeholder="correo@empresa.com" autocomplete="username"></div><div class="field"><label for="sbPassword">Contraseña</label><input id="sbPassword" type="password" placeholder="Contraseña de Supabase Auth" autocomplete="current-password"></div></div>
+<div class="cloud-actions"><button id="sbConnect" class="primary">Guardar conexión e iniciar sesión</button><button id="sbSignup">Crear cuenta</button><button id="sbLogout">Cerrar sesión</button><button id="sbPushLocal">Subir catálogo local a la nube</button></div>
+<div class="cloud-help" id="cloudMessage">Configura la URL y la clave pública de tu proyecto. La clave se guarda en este navegador; no uses la clave secreta service_role.</div>
+</div>
+</section>
 <main class="layout">
 <section class="panel"><div class="head">Productos <button id="addBtn">+ Agregar</button></div><div class="lefttools"><input id="search" placeholder="Buscar producto, código o ubicación"><div class="grid2"><button id="sampleBtn">Cargar ejemplo</button><button id="deleteBtn">Eliminar</button></div></div><div class="list" id="productList"></div><div class="muted" style="padding:10px">Revisa los campos y las imágenes antes de exportar.</div></section>
 <div class="main">
@@ -32,7 +43,7 @@
 var $=function(id){return document.getElementById(id)},products=[],activeId=0,images=[],nextId=1,db=null,saveTimer=null,saveImagesPending=false,dbReady=false;
 function safe(s){return String(s||"etiqueta").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9_-]+/g,"_").slice(0,70)||"etiqueta"}
 function norm(s){return String(s==null?"":s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().trim()}
-function product(o){return {id:nextId++,description:o.description||"",code:o.code||"",qty:o.qty||"1 PZ",location:o.location||"",topLabel:o.topLabel||"SURTIDO",imageId:o.imageId||"",imageRef:o.imageRef||"",sourceRow:Number.isFinite(o.sourceRow)?o.sourceRow:null,sourceSheet:o.sourceSheet||"",fieldRows:o.fieldRows||{},showLocation:o.showLocation!==false}}
+function product(o){return {id:nextId++,cloudId:o.cloudId||null,imagePath:o.imagePath||null,description:o.description||"",code:o.code||"",qty:o.qty||"1 PZ",location:o.location||"",topLabel:o.topLabel||"SURTIDO",imageId:o.imageId||"",imageRef:o.imageRef||"",sourceRow:Number.isFinite(o.sourceRow)?o.sourceRow:null,sourceSheet:o.sourceSheet||"",fieldRows:o.fieldRows||{},showLocation:o.showLocation!==false}}
 function active(){return products.find(function(p){return p.id===activeId})||products[0]}
 function photoFor(p){return images.find(function(i){return i.id===p.imageId})}
 function status(s){$("status").textContent=s}
@@ -61,7 +72,7 @@ var d=document.createElement("div");d.className="item"+(x.id===activeId?" active
 $("showLocation").checked=p.showLocation!==false;$("imageSelect").innerHTML='<option value="">Sin fotografía</option>';
 images.forEach(function(im){var op=document.createElement("option");op.value=im.id;op.textContent=im.name;$("imageSelect").appendChild(op)});$("imageSelect").value=p.imageId||"";
 $("pvType").textContent=p.topLabel||"SURTIDO";$("pvQty").textContent=p.qty||"";$("pvCode").textContent=p.code||"";$("pvDescription").textContent=p.description||"";$("pvLocation").textContent=p.location||"";$("locationRow").classList.toggle("hidden",!p.showLocation);
-var area=$("photo");area.innerHTML="";var im=photoFor(p);if(im){var image=document.createElement("img");image.src=im.data;image.alt=p.description;area.appendChild(image)}else{area.innerHTML='<div class="placeholder">Fotografía del producto</div>'}
+var area=$("photo");area.innerHTML="";var im=photoFor(p);if(im){var image=document.createElement("img");image.src=im.data;image.alt=p.description;image.crossOrigin="anonymous";area.appendChild(image)}else{area.innerHTML='<div class="placeholder">Fotografía del producto</div>'}
 }
 ["description","code","qty","location","topLabel"].forEach(function(k){$(k).addEventListener("input",function(){var p=active();p[k]=$(k).value;render();queueSave(false)})});
 $("showLocation").onchange=function(){active().showLocation=$("showLocation").checked;render();queueSave(false)};
@@ -137,7 +148,7 @@ if(!out.length)throw Error("No se detectaron productos. Revisa la hoja.");
 images=images.filter(function(im){return !im.embedded});
 if(/\.(xlsx|xlsm|xltx|xltm)$/i.test(f.name)){try{images=images.concat(await xlsxEmbeddedImages(buffer))}catch(imgErr){console.warn("No fue posible extraer imágenes del Excel:",imgErr)}}
 products=out;
-products.forEach(function(p){if(p.imageRef&&/^data:image\/[^;]+;base64,/i.test(p.imageRef)){var id="data_"+p.id;images.push({id:id,name:"Imagen de "+(p.code||p.description),data:p.imageRef});p.imageId=id}});
+products.forEach(function(p){if(p.imageRef&&/^data:image\/[^;]+;base64,/i.test(p.imageRef)){var id="data_"+p.id;images.push({id:id,name:"Imagen de "+(p.code||p.description),data:p.imageRef,dirty:true,cloud:false,path:null});p.imageId=id}});
 activeId=products[0].id;matchImages();render();queueSave(true);
 var found=images.filter(function(im){return im.embedded&&(!im.sourceSheet||im.sourceSheet===chosenSheet)}).length;
 if(/\.(csv|txt)$/i.test(f.name))status("Importados "+products.length+" productos. Un CSV no conserva imágenes incrustadas: usa el Excel .xlsx original o carga las fotos aparte.");
@@ -156,10 +167,10 @@ var c=norm(p.code),d=norm(p.description).replace(/[^A-Z0-9]/g,""),byName=images.
 if(!byName&&images.filter(function(im){return !im.embedded}).length===1)byName=images.find(function(im){return !im.embedded});if(byName)p.imageId=byName.id
 })
 }
-async function addImages(files){for(var f of files){if(!f.type.startsWith("image/"))continue;images.push({id:"im"+Date.now()+Math.random(),name:f.name,data:await fileData(f)})}matchImages();render();queueSave(true);status("Fotografías guardadas en la base local; verifica la asignación.")}
+async function addImages(files){for(var f of files){if(!f.type.startsWith("image/"))continue;images.push({id:"im"+Date.now()+Math.random(),name:f.name,data:await fileData(f),dirty:true,cloud:false,path:null})}matchImages();render();queueSave(true);status("Fotografías guardadas en la base local; verifica la asignación.")}
 $("imageFiles").onchange=async function(e){await addImages(Array.from(e.target.files));e.target.value=""};
 $("singleImage").onchange=async function(e){if(e.target.files[0]){await addImages([e.target.files[0]]);active().imageId=images[images.length-1].id;render();queueSave(true)}e.target.value=""};
-function canvasFor(p){return new Promise(async function(resolve,reject){activeId=p.id;render();requestAnimationFrame(function(){requestAnimationFrame(async function(){try{if(!window.html2canvas)throw Error("No se cargó html2canvas.");resolve(await html2canvas($("paper"),{scale:3,backgroundColor:"#fff",logging:false}))}catch(e){reject(e)}})})})}
+function canvasFor(p){return new Promise(async function(resolve,reject){activeId=p.id;render();requestAnimationFrame(function(){requestAnimationFrame(async function(){try{if(!window.html2canvas)throw Error("No se cargó html2canvas.");resolve(await html2canvas($("paper"),{scale:3,backgroundColor:"#fff",logging:false,useCORS:true}))}catch(e){reject(e)}})})})}
 function save(blob,name){var a=document.createElement("a"),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1500)}
 async function imageBlob(p,type){var c=await canvasFor(p);return await new Promise(function(res){c.toBlob(res,type==="jpg"?"image/jpeg":"image/png",.94)})}
 async function exportImage(type){try{var p=active();status("Generando "+type.toUpperCase()+"…");save(await imageBlob(p,type),safe(p.code||p.description)+"."+(type==="jpg"?"jpg":"png"));status("Archivo generado.")}catch(e){alert(e.message);status(e.message)}finally{render()}}
@@ -173,7 +184,100 @@ function escapeHtml(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c
 function wordHtml(p){var im=photoFor(p),img=im?'<img src="'+im.data+'" style="max-width:100%;max-height:100%;object-fit:contain">':'<div>Fotografía no asignada</div>';return '<section style="height:10.6in;display:flex;flex-direction:column;font-family:Arial;color:#000;page-break-after:always"><div style="height:.9in;background:#9bcdf5;border:1px solid #000;display:flex;justify-content:space-between;align-items:center;padding:0 .25in;font-size:28pt;font-weight:bold"><span>'+escapeHtml(p.topLabel||"SURTIDO")+'</span><span>'+escapeHtml(p.qty)+'</span></div><div style="height:.55in;border:1px solid #000;border-top:0;display:flex;justify-content:space-between;padding:0 .4in;font-size:22pt;font-weight:bold"><span>CODIGO</span><span>'+escapeHtml(p.code)+'</span></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:.3in">'+img+'</div><div style="border:1px solid #000;font-weight:bold;font-size:15pt"><div style="display:grid;grid-template-columns:auto 1fr;border-bottom:1px solid #000"><span style="padding:7px">DESCRIPCION</span><span style="padding:7px">'+escapeHtml(p.description)+'</span></div>'+(p.showLocation?'<div style="display:grid;grid-template-columns:auto 1fr"><span style="padding:7px">UBICACIÓN</span><span style="padding:7px">'+escapeHtml(p.location)+'</span></div>':'')+'</div></section>'}
 function exportWord(all){var list=all?products:[active()],html='<!doctype html><html><head><meta charset="utf-8"><style>@page{size:letter portrait;margin:.16in}body{margin:0}</style></head><body>'+list.map(wordHtml).join("")+'</body></html>';save(new Blob(["\ufeff",html],{type:"application/msword"}),all?"etiquetas_editables_todas.doc":safe(active().code||active().description)+".doc");status("Word editable generado.")}
 $("wordBtn").onclick=function(){exportWord(false)};$("allWordBtn").onclick=function(){exportWord(true)};
+
+/* Supabase cloud sync: shared catalog + private Storage + Realtime. */
+var supabaseClient=null,cloudUser=null,cloudReady=false,cloudTimer=null,cloudPullTimer=null,cloudChannel=null,cloudBusy=false,cloudSuppressSave=false,cloudIgnoreRealtime=false,localQueueSave=queueSave;
+var CLOUD_BUCKET="label-images",CLOUD_TABLE="label_products",CLOUD_CONFIG_KEY="label_supabase_config_v1";
+function cloudMessage(s){$("cloudMessage").textContent=s}
+function cloudBadge(s,ok){$("cloudBadge").textContent=s;$("cloudBadge").classList.toggle("ok",!!ok)}
+function loadCloudConfig(){try{var c=JSON.parse(localStorage.getItem(CLOUD_CONFIG_KEY)||"{}");$("sbUrl").value=c.url||"";$("sbKey").value=c.key||""}catch(e){}}
+function validUrl(s){try{var u=new URL(s);return u.protocol==="https:"&&!!u.hostname}catch(e){return false}}
+async function getSupabaseFactory(){if(window.supabaseCreateClient)return window.supabaseCreateClient;var m=await import("https://esm.sh/@supabase/supabase-js@2");window.supabaseCreateClient=m.createClient;return m.createClient}
+function newCloudId(){if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c){var r=Math.random()*16|0;return (c==="x"?r:(r&3|8)).toString(16)})}
+function dataUrlBlob(data){return fetch(data).then(function(r){return r.blob()})}
+function extFromImage(im){var name=String(im&&im.name||"").toLowerCase(),m=name.match(/\.(png|jpe?g|webp|gif)$/);if(m)return m[1]==="jpeg"?"jpg":m[1];var match=String(im&&im.data||"").match(/^data:image\/(png|jpeg|jpg|webp|gif)/i);return match?(match[1].toLowerCase()==="jpeg"?"jpg":match[1].toLowerCase()):"png"}
+async function cloudUploadProduct(p){
+if(!p.cloudId)p.cloudId=newCloudId();
+var im=photoFor(p),path=p.imagePath||null;
+if(im){
+if(im.dirty||!im.path){
+path="product-photos/"+p.cloudId+"/"+safe(p.code||p.description)+"."+extFromImage(im);
+var blob=await dataUrlBlob(im.data),up=await supabaseClient.storage.from(CLOUD_BUCKET).upload(path,blob,{upsert:true,contentType:blob.type||"image/png"});
+if(up.error)throw up.error;im.path=path;im.dirty=false;im.cloud=true;
+}else path=im.path;
+p.imagePath=path;
+}else {path=null;p.imagePath=null}
+return {id:p.cloudId,description:p.description||"",code:p.code||"",qty:p.qty||"",location:p.location||"",top_label:p.topLabel||"SURTIDO",show_location:p.showLocation!==false,image_path:path,sort_order:products.indexOf(p),updated_by:cloudUser.id};
+}
+async function cloudSaveProducts(list){
+if(!cloudReady||!supabaseClient||!cloudUser||cloudBusy||!list.length)return;
+cloudBusy=true;
+try{var rows=[];for(var p of list)rows.push(await cloudUploadProduct(p));var result=await supabaseClient.from(CLOUD_TABLE).upsert(rows,{onConflict:"id"});if(result.error)throw result.error;if(dbReady)await localQueueSave(true);cloudBadge("Sincronizado",true);cloudMessage("Catálogo compartido. Los cambios se guardan en Supabase y se actualizan en los demás equipos.")}
+catch(err){console.error("Error sincronizando Supabase:",err);cloudBadge("Error de sincronización",false);cloudMessage("No se pudo guardar en la nube: "+(err.message||String(err))+". Verifica permisos y configuración SQL.")}
+finally{cloudBusy=false}
+}
+function queueCloudSave(all){
+if(!cloudReady||cloudSuppressSave)return;if(cloudTimer)clearTimeout(cloudTimer);
+cloudTimer=setTimeout(async function(){try{if(all){await cloudSaveProducts(products.slice());if(cloudIgnoreRealtime){cloudIgnoreRealtime=false;await pullCloud();if(cloudReady)subscribeCloud()}}else{var p=active();if(p)await cloudSaveProducts([p])}}catch(e){console.error(e)}},650)
+}
+async function readCloudImage(path,row){var result=await supabaseClient.storage.from(CLOUD_BUCKET).download(path);if(result.error)throw result.error;return {id:"cloudimg_"+row.id,name:(row.code||row.description||"producto")+".jpg",data:await fileData(result.data),path:path,cloud:true,dirty:false}}
+async function pullCloud(){
+if(!supabaseClient||!cloudUser)return;var current=active(),selectedCloudId=current&&current.cloudId;cloudSuppressSave=true;
+try{
+var access=await supabaseClient.from("label_editor_access").select("user_id,is_admin").eq("user_id",cloudUser.id).maybeSingle();
+if(access.error)throw access.error;
+if(!access.data){cloudReady=false;cloudBadge("Cuenta sin autorización",false);cloudMessage("La cuenta inició sesión, pero no tiene permiso para acceder al catálogo. El administrador debe agregarla a label_editor_access siguiendo SUPABASE_SETUP.md.");return}
+var res=await supabaseClient.from(CLOUD_TABLE).select("*").order("sort_order",{ascending:true});if(res.error)throw res.error;
+var rows=res.data||[];
+if(!rows.length){cloudReady=false;cloudBadge("Conectado · nube vacía",true);cloudMessage("Supabase está conectado y autorizado, pero todavía no hay catálogo en la nube. Desde el equipo con los datos correctos, usa «Subir catálogo local a la nube».");return}
+var newImages=[],newProducts=[];
+for(var row of rows){var im=null;if(row.image_path){try{im=await readCloudImage(row.image_path,row);newImages.push(im)}catch(imgErr){console.warn("No se pudo descargar la foto de "+row.code,imgErr)}}
+var p=product({cloudId:row.id,imagePath:row.image_path,description:row.description,code:row.code,qty:row.qty,location:row.location,topLabel:row.top_label,showLocation:row.show_location});if(im)p.imageId=im.id;newProducts.push(p)}
+images=newImages;products=newProducts;nextId=products.reduce(function(max,p){return Math.max(max,p.id+1)},nextId);activeId=(products.find(function(p){return p.cloudId===selectedCloudId})||products[0]).id;cloudReady=true;render();if(dbReady)await localQueueSave(true);cloudBadge("Sincronizado",true);cloudMessage("Se cargaron "+products.length+" productos desde Supabase. Los cambios de otros equipos llegarán automáticamente.");
+}catch(err){cloudReady=false;cloudBadge("Sin acceso",false);var msg=err.message||String(err);if(/permission|policy|row-level|not allowed|42501/i.test(msg))msg+=". Verifica que la cuenta esté autorizada en label_editor_access.";cloudMessage("No se pudo leer Supabase: "+msg);console.error("Error leyendo catálogo Supabase:",err)}
+finally{cloudSuppressSave=false}
+}
+function subscribeCloud(){
+if(!supabaseClient||!cloudUser)return;if(cloudChannel){try{supabaseClient.removeChannel(cloudChannel)}catch(e){}}
+cloudChannel=supabaseClient.channel("label-products-live").on("postgres_changes",{event:"*",schema:"public",table:CLOUD_TABLE},function(){if(cloudBusy||cloudIgnoreRealtime)return;if(cloudPullTimer)clearTimeout(cloudPullTimer);cloudPullTimer=setTimeout(function(){pullCloud()},700)}).subscribe(function(state){if(state==="CHANNEL_ERROR"||state==="TIMED_OUT")cloudMessage("Realtime se interrumpió. Revisa la conexión; puedes volver a conectar o actualizar la página.")});
+}
+async function connectCloud(){
+var url=$("sbUrl").value.trim().replace(/\/+$/,""),key=$("sbKey").value.trim(),email=$("sbEmail").value.trim(),password=$("sbPassword").value;
+if(!validUrl(url)||!key){cloudMessage("Ingresa la Project URL (https://…) y la clave pública publishable/anon.");return}
+try{localStorage.setItem(CLOUD_CONFIG_KEY,JSON.stringify({url:url,key:key}));var factory=await getSupabaseFactory();
+if(!supabaseClient||supabaseClient.supabaseUrl!==url){if(cloudChannel&&supabaseClient)try{supabaseClient.removeChannel(cloudChannel)}catch(e){}supabaseClient=factory(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});cloudReady=false}
+var sess=await supabaseClient.auth.getSession();if(sess.error)throw sess.error;var session=sess.data.session;
+if(email&&password){var login=await supabaseClient.auth.signInWithPassword({email:email,password:password});if(login.error)throw login.error;session=login.data.session}
+if(!session){cloudBadge("Falta iniciar sesión",false);cloudMessage("Configuración guardada. Escribe correo y contraseña y pulsa de nuevo para iniciar sesión, o crea una cuenta.");return}
+cloudUser=session.user;cloudBadge("Conectando…",false);await pullCloud();if(cloudReady)subscribeCloud();
+}catch(err){cloudReady=false;cloudBadge("No conectado",false);cloudMessage("No se pudo conectar: "+(err.message||String(err)));console.error("Error conectando Supabase:",err)}
+}
+async function signupCloud(){
+var url=$("sbUrl").value.trim().replace(/\/+$/,""),key=$("sbKey").value.trim(),email=$("sbEmail").value.trim(),password=$("sbPassword").value;
+if(!validUrl(url)||!key){cloudMessage("Primero ingresa la Project URL y la clave pública de Supabase.");return}if(!email||password.length<8){cloudMessage("Escribe un correo y contraseña de al menos 8 caracteres.");return}
+try{localStorage.setItem(CLOUD_CONFIG_KEY,JSON.stringify({url:url,key:key}));var factory=await getSupabaseFactory();supabaseClient=factory(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});var res=await supabaseClient.auth.signUp({email:email,password:password});if(res.error)throw res.error;
+if(res.data.session){cloudUser=res.data.user;await pullCloud();if(cloudReady)subscribeCloud()}else{cloudBadge("Confirma tu correo",false);cloudMessage("Revisa tu correo y confirma la cuenta. Después inicia sesión. El administrador debe autorizarla en label_editor_access.")}}
+catch(err){cloudBadge("No conectado",false);cloudMessage("No se pudo crear la cuenta: "+(err.message||String(err)))}
+}
+async function logoutCloud(){try{if(supabaseClient)await supabaseClient.auth.signOut();if(cloudChannel&&supabaseClient)await supabaseClient.removeChannel(cloudChannel)}catch(e){}cloudUser=null;cloudReady=false;cloudChannel=null;cloudBadge("Sesión cerrada",false);cloudMessage("Los datos locales siguen guardados. Inicia sesión para abrir el catálogo compartido.")}
+async function uploadLocalCatalog(){
+if(!supabaseClient){cloudMessage("Primero guarda la conexión e inicia sesión en Supabase.");return}if(!cloudUser){cloudMessage("Primero inicia sesión con una cuenta autorizada.");return}
+if(!confirm("Esta acción publica el catálogo de ESTA computadora. Si ya hay productos en la nube, se te preguntará antes de reemplazarlos. ¿Continuar?"))return;
+try{var access=await supabaseClient.from("label_editor_access").select("user_id").eq("user_id",cloudUser.id).maybeSingle();if(access.error)throw access.error;if(!access.data)throw new Error("Esta cuenta no está autorizada para el catálogo.");
+var count=await supabaseClient.from(CLOUD_TABLE).select("id",{count:"exact",head:true});if(count.error)throw count.error;
+if((count.count||0)>0&&!confirm("La nube ya contiene "+count.count+" productos. ¿REEMPLAZAR el catálogo compartido con el de esta computadora? Afectará a todos los usuarios."))return;
+if((count.count||0)>0){var del=await supabaseClient.from(CLOUD_TABLE).delete().not("id","is",null);if(del.error)throw del.error}
+products.forEach(function(p){p.cloudId=newCloudId();p.imagePath=null});cloudReady=true;cloudIgnoreRealtime=true;await cloudSaveProducts(products.slice());await pullCloud();cloudIgnoreRealtime=false;if(cloudReady)subscribeCloud()
+}catch(err){cloudIgnoreRealtime=false;cloudMessage("No se pudo subir el catálogo: "+(err.message||String(err)))}
+}
+function setupCloudUi(){
+loadCloudConfig();$("sbConnect").onclick=connectCloud;$("sbSignup").onclick=signupCloud;$("sbLogout").onclick=logoutCloud;$("sbPushLocal").onclick=uploadLocalCatalog;
+var originalQueueSave=queueSave;queueSave=function(includeImages){originalQueueSave(includeImages);queueCloudSave(!!includeImages)};
+try{var saved=JSON.parse(localStorage.getItem(CLOUD_CONFIG_KEY)||"{}");if(saved.url&&saved.key){cloudMessage("Configuración guardada en este navegador. Inicia sesión para cargar el catálogo compartido.");cloudBadge("Listo para conectar",false)}}catch(e){}
+}
+
 initializeDatabase();
+setupCloudUi();
 })();
 </script>
 </body></html>
